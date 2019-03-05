@@ -40,7 +40,25 @@ class LoginForm extends Component {
 
     onSubmitForm=(e) => {
         e.preventDefault();
-        console.log("On submit login form!");
+        let errors = {};
+        if (this.state.email === '') errors.email = "Cant't be empty!"
+        if (this.state.password === '') errors.password = "Cant't be empty!"
+
+        const isValid=Object.keys(errors).length===0
+        if (isValid) {
+            const {email, password} = this.state;
+            this.setState({isLoading: true});
+            this.props.login({Email: email, Password: password})
+            .then(
+                () => this.setState({done: true}),
+                (err) => this.setState( {errors: err.response.data, isLoading:false})
+            );
+        }
+        else
+        {
+            this.setState({ errors });
+        }
+
     }
 
     render() { 
@@ -50,10 +68,11 @@ class LoginForm extends Component {
             <form onSubmit={this.onSubmitForm}>
                 <h1>Login</h1>
                 
-                {/* !!errors.invalid ?
+                {
+                    !!errors.invalid ?
                     <div className="alert alert-danger">
                         <strong>Danger!</strong> {errors.invalid}.
-                    </div> : ''} */}
+                    </div> :''}
                     
                 <div className={classnames('form-group', { 'has-error': !!errors.email })}>
                     <label htmlFor="email">Email</label>

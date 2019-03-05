@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -8,14 +9,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.IdentityModel.Tokens;
 using WebSiteCore.DAL.Entities;
+using WebSiteCore.Helpers;
 
 namespace WebSiteCore.Controllers
 {
     public class Credentials
     {
+        [Required(ErrorMessage = "Поле є обов'язковим")]
+        [EmailAddress(ErrorMessage ="Не валідна пошта")]
         public string Email { get; set; }
+        [Required(ErrorMessage = "Поле є обов'язковим")]
         public string Password { get; set; }
     }
     [Produces("application/json")]
@@ -49,15 +55,24 @@ namespace WebSiteCore.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]Credentials credentials)
         {
+            if (!ModelState.IsValid)
+            {
+                var errrors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errrors);
+            }
             var result = await _signInManager
                 .PasswordSignInAsync(credentials.Email, credentials.Password,
                 false, false);
             if (!result.Succeeded)
-                return BadRequest();
+                return BadRequest(new { invalid = "Не валідні дані!" });
             var user = await _userManager.FindByEmailAsync(credentials.Email);
             await _signInManager.SignInAsync(user, isPersistent: false);
             return Ok(CreateToken(user));
+
+
         }
+
+        
         string CreateToken(DbUser user)
         {
             var claims = new Claim[]
