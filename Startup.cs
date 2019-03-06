@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebSiteCore.DAL.Entities;
+using WebSiteCore.GenericRepos.Abstract;
+using WebSiteCore.GenericRepos.Repository;
 
 namespace WebSiteCore
 {
@@ -29,6 +32,7 @@ namespace WebSiteCore
             services.AddDbContext<EFDbContext>(opt =>
                 opt.UseSqlServer(Configuration
                     .GetConnectionString("DefaultConnection")));
+            services.AddScoped<IRepository, EntityFrameworkRepository<IdentityDbContext<DbUser>>>();
 
             services.AddIdentity<DbUser, IdentityRole>()
                 .AddEntityFrameworkStores<EFDbContext>();
