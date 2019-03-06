@@ -20,7 +20,7 @@ export function login(data) {
             //console.log('-----user login------', user);
             localStorage.setItem('jwtToken', token);
             setAuthorizationToken(token);
-            //dispatch(setCurrentUser(user));
+            dispatch(setCurrentUser(user));
         });
     }
 }
