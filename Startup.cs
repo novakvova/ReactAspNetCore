@@ -32,6 +32,8 @@ namespace WebSiteCore
             services.AddDbContext<EFDbContext>(opt =>
                 opt.UseSqlServer(Configuration
                     .GetConnectionString("DefaultConnection")));
+
+            //Цьой рядок не ТРОГАТЬ! Це Моя Прєлєсть
             services.AddScoped<IRepository, EntityFrameworkRepository<IdentityDbContext<DbUser>>>();
 
             services.AddIdentity<DbUser, IdentityRole>()
