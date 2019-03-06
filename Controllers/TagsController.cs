@@ -26,6 +26,7 @@ namespace WebSiteCore.Controllers
         [HttpGet]
         public IEnumerable<Tags> GetTags()
         {
+                //var _context.GetAll<Tags>()
             return _context.GetAll<Tags>();
         }
 
