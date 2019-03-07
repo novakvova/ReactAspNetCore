@@ -16,7 +16,10 @@ namespace WebSiteCore.DAL.Entities
         {
 
         }
-        public DbSet<WebSiteCore.Model.Tags> Tags { get; set; }
+        public DbSet<Tags> Tags { get; set; }
+
+
+
 
     }
 }

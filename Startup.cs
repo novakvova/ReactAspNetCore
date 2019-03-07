@@ -34,7 +34,7 @@ namespace WebSiteCore
                     .GetConnectionString("DefaultConnection")));
 
             //Цьой рядок не ТРОГАТЬ! Це Моя Прєлєсть
-            services.AddScoped<IRepository, EntityFrameworkRepository<IdentityDbContext<DbUser>>>();
+            services.AddScoped<IRepository, EntityFrameworkRepository<EFDbContext>>();
 
             services.AddIdentity<DbUser, IdentityRole>()
                 .AddEntityFrameworkStores<EFDbContext>();
