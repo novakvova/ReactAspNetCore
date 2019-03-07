@@ -11,7 +11,7 @@ using WebSiteCore.GenericRepos.Abstract;
 namespace WebSiteCore.GenericRepos.Repository
 {
     public class EntityFrameworkReadOnlyRepository<TContext> : IReadOnlyRepository
-             where TContext : IdentityDbContext<DbUser>
+             where TContext : EFDbContext
     {
         protected readonly TContext context;
 

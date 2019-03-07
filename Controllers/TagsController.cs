@@ -11,6 +11,7 @@ using WebSiteCore.Model;
 
 namespace WebSiteCore.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class TagsController : Controller
@@ -20,13 +21,20 @@ namespace WebSiteCore.Controllers
         public TagsController(IRepository context)
         {
             _context = context;
+            var items = _context.GetAll<Tags>();
+            if (items.Count() == 0)
+            {
+                _context.Create(new Tags { Name = "New"});
+                _context.Create(new Tags { Name = "Old" });
+                _context.Save();
+            }
         }
 
         // GET: api/Tags
         [HttpGet]
         public IEnumerable<Tags> GetTags()
         {
-                //var _context.GetAll<Tags>()
+            
             return _context.GetAll<Tags>();
         }
 
