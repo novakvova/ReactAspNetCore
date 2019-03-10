@@ -18,6 +18,10 @@ export default (state = initialState, action = {}) => {
         ...state,
         tags: [...state.tags, action.tag]
     }
+    case UPDATE_TAG :
+    return { 
+        ...state
+    }
     default: return state;
   }
 }

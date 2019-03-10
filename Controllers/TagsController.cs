@@ -104,7 +104,7 @@ namespace WebSiteCore.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Tags
