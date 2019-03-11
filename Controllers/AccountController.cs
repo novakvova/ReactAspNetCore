@@ -8,9 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.IdentityModel.Tokens;
+using WebSiteCore.ActionFilters;
+using WebSiteCore.BLL.Models;
 using WebSiteCore.DAL.Entities;
 using WebSiteCore.Helpers;
 
@@ -19,7 +22,7 @@ namespace WebSiteCore.Controllers
     public class Credentials
     {
         [Required(ErrorMessage = "Поле є обов'язковим")]
-        [EmailAddress(ErrorMessage ="Не валідна пошта")]
+        [EmailAddress(ErrorMessage = "Не валідна пошта")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Поле є обов'язковим")]
         public string Password { get; set; }
@@ -37,17 +40,29 @@ namespace WebSiteCore.Controllers
             _signInManager = signInManager;
         }
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody]Credentials credentials)
+        public async Task<IActionResult> Register([FromBody]CustomRegisterModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                var errrors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errrors);
+            }
+
             var user = new DbUser
             {
-                UserName = credentials.Email,
-                Email = credentials.Email
+                UserName = model.Email,
+                Email = model.Email
             };
+
             var result = await _userManager
-                .CreateAsync(user, credentials.Password);
+                .CreateAsync(user, model.Password);
+
             if (!result.Succeeded)
-                return BadRequest(result.Errors);
+            {
+                return BadRequest(new { invalid = "Шось пішло не так!" });
+            }
+
+
             await _signInManager.SignInAsync(user, isPersistent: false);
 
             return Ok(CreateToken(user));
@@ -64,7 +79,7 @@ namespace WebSiteCore.Controllers
                 .PasswordSignInAsync(credentials.Email, credentials.Password,
                 false, false);
             if (!result.Succeeded)
-                return BadRequest(new { invalid = "Не валідні дані!" });
+                return BadRequest(new { invalid = "Не правильно введені дані!" });
             var user = await _userManager.FindByEmailAsync(credentials.Email);
             await _signInManager.SignInAsync(user, isPersistent: false);
             return Ok(CreateToken(user));

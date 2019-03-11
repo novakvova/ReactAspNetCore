@@ -5,6 +5,7 @@ import { Glyphicon, Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import "./NavMenu.css";
 
+
 class NavMenu extends Component {
   state = {  }
   render() { 
@@ -63,6 +64,11 @@ class NavMenu extends Component {
                 <Glyphicon glyph="th-list" /> Tags
               </NavItem>
             </LinkContainer>
+                      <LinkContainer to={'/register'}>
+                    <NavItem>
+                        <Glyphicon glyph='th-list' /> Register Form
+          </NavItem>
+                </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
@@ -77,3 +83,4 @@ const mapStateToProps=(state)=>{
 }
  
 export default connect(mapStateToProps, null)(NavMenu);
+

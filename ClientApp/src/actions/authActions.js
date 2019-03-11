@@ -24,3 +24,13 @@ export function login(data) {
         });
     }
 }
+
+export function register(data) {
+    console.log('--data--', data);
+    return dispatch => {
+        return axios.post('api/Account/Register', data)
+            .then(res => {
+                console.log("data register", res);
+            });
+    }
+}
