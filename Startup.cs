@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,8 @@ using System.Text;
 using WebSiteCore.ActionFilters;
 using WebSiteCore.CustomMiddleware;
 using WebSiteCore.DAL.Entities;
+using WebSiteCore.GenericRepos.Abstract;
+using WebSiteCore.GenericRepos.Repository;
 
 namespace WebSiteCore
 {
@@ -31,6 +34,9 @@ namespace WebSiteCore
             services.AddDbContext<EFDbContext>(opt =>
                 opt.UseSqlServer(Configuration
                     .GetConnectionString("DefaultConnection")));
+
+            //Цьой рядок не ТРОГАТЬ! Це Моя Прєлєсть
+            services.AddScoped<IRepository, EntityFrameworkRepository<EFDbContext>>();
 
             services.AddIdentity<DbUser, IdentityRole>()
                 .AddEntityFrameworkStores<EFDbContext>();

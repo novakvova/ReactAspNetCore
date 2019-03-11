@@ -104,4 +104,5 @@ namespace WebSiteCore.Controllers
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
     }
+
 }
