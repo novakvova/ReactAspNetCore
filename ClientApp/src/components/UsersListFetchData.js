@@ -6,11 +6,13 @@ import { usersactionCreators } from "../store/UsersList";
 
 class UsersListFetchData extends Component {
   componentWillMount() {
-    this.props.requestUsersList();
+    const startIndex = parseInt(this.props.match.params.startIndex, 10) || 0;
+    this.props.requestUsersList(startIndex);
   }
 
-  componentWillReceiveProps() {
-    this.props.requestWeatherForecasts();
+  componentWillReceiveProps(nextProps) {
+    const startIndex = parseInt(nextProps.match.params.startIndex, 10) || 0;
+    this.props.requestUsersList(startIndex);
   }
 
   render() {
@@ -18,6 +20,7 @@ class UsersListFetchData extends Component {
       <div>
         <h1>Users</h1>
         {renderUsersTable(this.props)}
+        {renderPagination(this.props)}
       </div>
     );
   }
@@ -43,7 +46,29 @@ function renderUsersTable(props) {
     </table>
   );
 }
+function renderPagination(props) {
+  const prevStartIndex = (props.startIndex || 0) - 5;
+  const nextStartIndex = (props.startIndex || 0) + 5;
 
+  return (
+    <p className="clearfix text-center">
+      <Link
+        className="btn btn-default pull-left"
+        to={`/fetchdata/${prevStartIndex}`}
+      >
+        Previous
+      </Link>
+      <Link
+        className="btn btn-default pull-right"
+        to={`/fetchdata/${nextStartIndex}`}
+      >
+        Next
+      </Link>
+      {props.isLoading ? <span>Loading...</span> : []}
+    </p>
+  );
+}
+export default connect(null, { login })(LoginForm);
 export default connect(
   state => state.users,
   dispatch => bindActionCreators(usersactionCreators, dispatch)

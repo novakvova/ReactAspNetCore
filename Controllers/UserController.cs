@@ -24,11 +24,12 @@ namespace WebSiteCore.Controllers
 
         // GET: api/User
         [HttpGet]
-        public IEnumerable<ApplicationUserListViewModel> Get()
+        public IEnumerable<ApplicationUserListViewModel> Get(int? startIndex)
         {
             var list = new List<ApplicationUserListViewModel>();
-            
-            foreach (var user in _userManager.Users.ToList())
+            int index = startIndex ?? 0;
+            var rawlist = _userManager.Users.Skip(index).Take(10).ToList();
+            foreach (var user in rawlist)
             {
                 list.Add(new ApplicationUserListViewModel()
                 {
