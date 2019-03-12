@@ -12,6 +12,7 @@ namespace WebSiteCore.BLL.Models
         [CustomEmailAttribute(ErrorMessage = "Already exist")]
         [Required(ErrorMessage = "Cant't be empty")]
         [EmailAddress(ErrorMessage = "Invalid email")]
+
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Cant't be empty")]
