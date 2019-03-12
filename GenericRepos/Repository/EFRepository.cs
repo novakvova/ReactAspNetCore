@@ -10,7 +10,7 @@ using WebSiteCore.GenericRepos.Abstract;
 namespace WebSiteCore.GenericRepos.Repository
 {
     public class EntityFrameworkRepository<TContext> : EntityFrameworkReadOnlyRepository<TContext>, IRepository
-             where TContext : IdentityDbContext<DbUser>
+             where TContext : EFDbContext
     {
         public EntityFrameworkRepository(TContext context)
             : base(context)

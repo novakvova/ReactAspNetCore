@@ -2,22 +2,21 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import { Redirect } from "react-router";
-import { login } from "../../../actions/authActions";
+import { register } from "../../../actions/authActions";
+import {Redirect} from 'react-router-dom';  
 
-class LoginForm extends Component {
-    
-    state = { 
+class RegisterForm extends Component {
+    state = {
         email: '',
         password: '',
+        confirmPassword: '',
         errors: {
-            //password: "Вкажи пароль"
         },
         done: false,
         isLoading: false
-    }
+     }
 
-    setStateByErrors=(name, value) => {
+     setStateByErrors=(name, value) => {
         if (!!this.state.errors[name]) {
             let errors = Object.assign({}, this.state.errors);
             delete errors[name];
@@ -32,7 +31,7 @@ class LoginForm extends Component {
             this.setState(
               { [name]: value })
           }
-    } 
+    }
 
     handleChange = (e) => {
         this.setStateByErrors(e.target.name, e.target.value);
@@ -40,40 +39,46 @@ class LoginForm extends Component {
 
     onSubmitForm=(e) => {
         e.preventDefault();
+
+        //validation
         let errors = {};
         if (this.state.email === '') errors.email = "Cant't be empty!"
+        //if (this.state.email !==  "/^[a-zA-Z0-9]+@+[a-zA-Z0-9]+.+[A-z]/") errors.email = "Enter valid email!"
+       
         if (this.state.password === '') errors.password = "Cant't be empty!"
+        if (this.state.confirmPassword === '') errors.confirmPassword = "Cant't be empty!"
+        if (this.state.confirmPassword !== this.state.password) errors.confirmPassword = "Passwords do not match!"
 
         const isValid=Object.keys(errors).length===0
         if (isValid) {
-            const {email, password} = this.state;
+            const {email, password,confirmPassword} = this.state;
             this.setState({isLoading: true});
-            this.props.login({Email: email, Password: password})
+            this.props.register({email, password,confirmPassword})
             .then(
                 () => this.setState({done: true}),
-                (err) => this.setState( {errors: err.response.data, isLoading:false})
+                (err) => {
+                    this.setState( {errors: err.response.data, isLoading:false});
+                    console.log(err.response.data);
+            }
             );
         }
         else
         {
             this.setState({ errors });
         }
-
     }
 
-    render() { 
+    render() {
         const { errors, isLoading } = this.state;
         console.log('---FormLogin state----', this.state);
         const form = (
             <form onSubmit={this.onSubmitForm}>
-                <h1>Login</h1>
-
+                <h1>Register</h1>
                 {
                     !!errors.invalid ?
-                        <div className="alert alert-danger">
-                            <strong>Danger!</strong> {errors.invalid}.
-                    </div> : ''}
-
+                    <div className="alert alert-danger">
+                        <strong>Danger!</strong> {errors.invalid}.
+                    </div> :''}
                 <div className={classnames('form-group', { 'has-error': !!errors.email })}>
                     <label htmlFor="email">Email</label>
                     <input type="text"
@@ -96,25 +101,35 @@ class LoginForm extends Component {
                     {!!errors.password ? <span className="help-block">{errors.password}</span> : ''}
                 </div>
 
+                
+                <div className={classnames('form-group', { 'has-error': !!errors.confirmPassword })}>
+                    <label htmlFor="confirmPassword">Пароль</label>
+                    <input type="password"
+                        className="form-control"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        value={this.state.confirmPassword}
+                        onChange={this.handleChange} />
+                    {!!errors.confirmPassword ? <span className="help-block">{errors.confirmPassword}</span> : ''}
+                </div>
+
                 <div className="form-group">
                     <div className="col-md-4">
-                        <button type="submit" className="btn btn-warning" disabled={isLoading}>Вхід<span className="glyphicon glyphicon-send"></span></button>
+                        <button type="submit" className="btn btn-warning" disabled={isLoading}>Реєстрація<span className="glyphicon glyphicon-send"></span></button>
                     </div>
                 </div>
+
             </form>
         );
-
         return (
-            this.state.done ?
-                <Redirect to="/" /> :
-                form
-        );
+            this.state.done?
+            <Redirect to="/games"/>:form
+         );
     }
 }
-
-LoginForm.propTypes =
+RegisterForm.propTypes =
 {
-    login: PropTypes.func.isRequired
+    register: PropTypes.func.isRequired
 }
- 
-export default connect(null, { login })(LoginForm);
+
+export default connect(null, { register })(RegisterForm);

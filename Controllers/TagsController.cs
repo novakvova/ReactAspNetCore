@@ -11,6 +11,7 @@ using WebSiteCore.Model;
 
 namespace WebSiteCore.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class TagsController : Controller
@@ -20,13 +21,36 @@ namespace WebSiteCore.Controllers
         public TagsController(IRepository context)
         {
             _context = context;
+            var items = _context.GetAll<Tags>();
+            if (items.Count() == 0)
+            {
+                _context.Create(new Tags { Name = "New"});
+                _context.Create(new Tags { Name = "Old" });
+                _context.Save();
+            }
         }
 
         // GET: api/Tags
         [HttpGet]
-        public IEnumerable<Tags> GetTags()
+        public async Task<IActionResult> GetTags()
         {
-            return _context.GetAll<Tags>();
+            var tags = await _context.GetAllAsync<Tags>();
+            if (tags != null)
+            {
+                var response = new
+                {
+                    searchSuccess = true,
+                    dataTotalSize = tags.Count(),
+                    tags
+                };
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest("No items in DataBase");
+            }
+
+     
         }
 
         // GET: api/Tags/5
@@ -80,22 +104,28 @@ namespace WebSiteCore.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Tags
         [HttpPost]
-        public async Task<IActionResult> PostTags([FromBody] Tags tags)
+        public async Task<IActionResult> PostTags([FromBody] Tags tag)
         {
+            bool item = await _context.GetExistsAsync<Tags>(x=> x.Name == tag.Name);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            else if (item)
+            {
+                return BadRequest( new { Name = "Element with this name is alredy in base" });
 
-            _context.Create(tags);
+            }
+
+            _context.Create(tag);
             await _context.SaveAsync();
-
-            return CreatedAtAction("GetTags", new { id = tags.Id }, tags);
+            //return Ok();
+            return CreatedAtAction("GetTags", new { id = tag.Id }, tag);
         }
 
         // DELETE: api/Tags/5
