@@ -9,5 +9,6 @@ namespace WebSiteCore.DAL.Entities
     
     public class DbUser : IdentityUser
     {
+        public virtual UserImage UserImage { get; set; }
     }
 }
