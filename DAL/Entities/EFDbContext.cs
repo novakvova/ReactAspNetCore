@@ -15,6 +15,6 @@ namespace WebSiteCore.DAL.Entities
         {
 
         }
-
+        public DbSet<UserImage> UserImages { get; set; }
     }
 }
