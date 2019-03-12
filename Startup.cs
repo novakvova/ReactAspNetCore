@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using WebSiteCore.ActionFilters;
+using WebSiteCore.CustomMiddleware;
 using WebSiteCore.DAL.Entities;
+using WebSiteCore.GenericRepos.Abstract;
+using WebSiteCore.GenericRepos.Repository;
 
 namespace WebSiteCore
 {
@@ -30,8 +35,18 @@ namespace WebSiteCore
                 opt.UseSqlServer(Configuration
                     .GetConnectionString("DefaultConnection")));
 
+            //Цьой рядок не ТРОГАТЬ! Це Моя Прєлєсть
+            services.AddScoped<IRepository, EntityFrameworkRepository<EFDbContext>>();
+
             services.AddIdentity<DbUser, IdentityRole>()
                 .AddEntityFrameworkStores<EFDbContext>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Default Password settings.
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredUniqueChars = 0;
+            });
 
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is the secret phrase"));
 
@@ -65,6 +80,8 @@ namespace WebSiteCore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseAuthentication();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -78,6 +95,8 @@ namespace WebSiteCore
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
             app.UseMvc(routes =>
             {

@@ -3,19 +3,21 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebSiteCore.DAL.Entities;
 
 namespace WebSiteCore.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    partial class EFDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190306170218_Tags and Controller with Generic repository")]
+    partial class TagsandControllerwithGenericrepository
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -201,17 +203,6 @@ namespace WebSiteCore.Migrations
                     b.ToTable("tblTags");
                 });
 
-            modelBuilder.Entity("WebSiteCore.DAL.Entities.UserImage", b =>
-                {
-                    b.Property<string>("Id");
-
-                    b.Property<string>("Path");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("tblUserImages");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -254,14 +245,6 @@ namespace WebSiteCore.Migrations
                     b.HasOne("WebSiteCore.DAL.Entities.DbUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("WebSiteCore.DAL.Entities.UserImage", b =>
-                {
-                    b.HasOne("WebSiteCore.DAL.Entities.DbUser", "User")
-                        .WithOne("UserImage")
-                        .HasForeignKey("WebSiteCore.DAL.Entities.UserImage", "Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
