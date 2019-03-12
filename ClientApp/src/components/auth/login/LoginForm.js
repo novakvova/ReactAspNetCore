@@ -64,16 +64,16 @@ class LoginForm extends Component {
     render() { 
         const { errors, isLoading } = this.state;
         console.log('---FormLogin state----', this.state);
-        return ( 
+        const form = (
             <form onSubmit={this.onSubmitForm}>
                 <h1>Login</h1>
-                
+
                 {
                     !!errors.invalid ?
-                    <div className="alert alert-danger">
-                        <strong>Danger!</strong> {errors.invalid}.
-                    </div> :''}
-                    
+                        <div className="alert alert-danger">
+                            <strong>Danger!</strong> {errors.invalid}.
+                    </div> : ''}
+
                 <div className={classnames('form-group', { 'has-error': !!errors.email })}>
                     <label htmlFor="email">Email</label>
                     <input type="text"
@@ -102,7 +102,13 @@ class LoginForm extends Component {
                     </div>
                 </div>
             </form>
-         );
+        );
+
+        return (
+            this.state.done ?
+                <Redirect to="/" /> :
+                form
+        );
     }
 }
 
