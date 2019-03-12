@@ -9,7 +9,7 @@ namespace WebSiteCore.BLL.Models
 {
     public class CustomRegisterModel
     {
-        [CustomEmailAttribute(ErrorMessage = "Уже зареэстрована")]
+        [CustomEmail(ErrorMessage = "Уже зареэстрована")]
         [Required(ErrorMessage = "Поле є обов'язковим")]
         [EmailAddress(ErrorMessage = "Не правильно введена пошта")]
         public string Email { get; set; }
