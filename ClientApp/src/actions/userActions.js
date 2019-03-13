@@ -1,24 +1,20 @@
 import axios from "axios";
-import { GET_USERS_LIST } from "./types";
+import { SET_USERS } from "./types";
 //import jwt from 'jsonwebtoken';
 //import setAuthorizationToken from '../utils/setAuthorizationToken';
 
-export function GetUsersList() {
+export function setUsers(users) {
   return {
-    type: GET_USERS_LIST
+    type: SET_USERS,
+    users
   };
 }
 
-export function users(data) {
+export function getUsers() {
   return dispatch => {
-    return axios.get("api/User", data).then(res => {
-      var listusers = res.data;
-      console.log("listusers", listusers);
-      //var user=jwt.decode(token);
-      //console.log('-----user login------', user);
-      //localStorage.setItem('jwtToken', token);
-      //setAuthorizationToken(token);
-      //dispatch(setCurrentUser(user));
+    return axios.get("api/User/list").then(res => {
+      console.log("LocalStorage Users: ", res.data);
+      dispatch(setUsers(res.data));
     });
   };
 }

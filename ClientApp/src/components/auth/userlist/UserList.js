@@ -1,54 +1,21 @@
 import React, { Component } from "react";
-import classnames from "classnames";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Redirect } from "react-router";
-import { users } from "../../../actions/userActions";
+import UserCard from "./UserCard";
 
 class UserList extends Component {
-  state = {
-    userEmail: "",
-    Roles: "",
-    errors: {},
-    done: false,
-    isLoading: false
-  };
-
-  setStateByErrors = (name, value) => {
-    if (!!this.state.errors[name]) {
-      let errors = Object.assign({}, this.state.errors);
-      delete errors[name];
-      this.setState({
-        [name]: value,
-        errors
-      });
-    } else {
-      this.setState({ [name]: value });
-    }
-  };
-
+  state = {};
   render() {
-    return (
-      <div>
-        <h1>Users</h1>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>User Name (Email)</th>
-              <th>Roles</th>
-            </tr>
-          </thead>
-          <tbody>
-            {props.users.map(user => (
-              <tr key={user.userEmail}>
-                <td>{user.userEmail}</td>
-                <td>{user.Roles}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    console.log("--USerList props--", this.props);
+    const { users } = this.props;
+    const emptyMessage = <p>Список пустий</p>;
+    const usersList = (
+      <div className="row">
+        {users.map(item => (
+          <UserCard user={item} key={item.id} />
+        ))}
       </div>
     );
+    return <div>{users.length === 0 ? emptyMessage : usersList}</div>;
   }
 }
 
@@ -56,7 +23,4 @@ UserList.propTypes = {
   users: PropTypes.func.isRequired
 };
 
-export default connect(
-  null,
-  { users }
-)(UserList);
+export default UserList;

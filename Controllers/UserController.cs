@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace WebSiteCore.Controllers
     [Produces("application/json")]
     [Route("api/User")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         readonly UserManager<DbUser> _userManager;
@@ -23,21 +25,16 @@ namespace WebSiteCore.Controllers
         }
 
         // GET: api/User
-        [HttpGet]
-        public IEnumerable<ApplicationUserListViewModel> Get(int? startIndex)
+        [HttpGet("list")]
+        public IEnumerable<ApplicationUserListViewModel> Get()
         {
-            var list = new List<ApplicationUserListViewModel>();
-            int index = startIndex ?? 0;
-            var rawlist = _userManager.Users.Skip(index).Take(10).ToList();
-            foreach (var user in rawlist)
+            
+            var model= _userManager.Users.Select(u=>new ApplicationUserListViewModel
             {
-                list.Add(new ApplicationUserListViewModel()
-                {
-                    UserEmail = user.Email,
-                    Roles = _userManager.GetRolesAsync(user).Result
-                });
-            }
-            return list;
+                UserEmail=u.Email
+            }).ToList();
+           
+            return model;
         }
 
         // GET: api/User/5
