@@ -12,7 +12,7 @@ class UserCard extends Component {
         <div className="thumbnail">
           <div className="caption">
             <h4 className="group inner list-group-item-heading">
-              {user.userEmail}
+              {user.email}
             </h4>
             <p className="group inner list-group-item-text">roles</p>
           </div>

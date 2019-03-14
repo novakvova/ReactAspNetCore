@@ -31,7 +31,8 @@ namespace WebSiteCore.Controllers
             
             var model= _userManager.Users.Select(u=>new ApplicationUserListViewModel
             {
-                UserEmail=u.Email
+                Id = u.Id,
+                Email = u.Email
             }).ToList();
            
             return model;
