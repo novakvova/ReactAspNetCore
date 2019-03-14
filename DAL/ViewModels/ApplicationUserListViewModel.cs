@@ -7,7 +7,8 @@ namespace WebSiteCore.DAL.ViewModels
 {
     public class ApplicationUserListViewModel
     {
-        public string UserEmail { get; set; }
+        public string Id { get; set; }
+        public string Email { get; set; }
         public IList<string> Roles { get; set; }
     }
 }
