@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Pages.Account.Internal;
@@ -64,7 +66,6 @@ namespace WebSiteCore.Controllers
 
 
             await _signInManager.SignInAsync(user, isPersistent: false);
-
             return Ok(CreateToken(user));
         }
         [HttpPost("login")]

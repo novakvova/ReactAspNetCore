@@ -19,7 +19,8 @@ class RegisterForm extends Component {
         errors: {
         },
         done: false,
-        isLoading: false
+        isLoading: false,
+        image: ''
      }
 
      setStateByErrors=(name, value) => {
@@ -120,6 +121,17 @@ class RegisterForm extends Component {
                         name="confirmPassword"
                         value={this.state.confirmPassword}
                         onChange={this.handleChange} />
+                    {!!errors.confirmPassword ? <span className="help-block">{errors.confirmPassword}</span> : ''}
+                </div>
+
+                <div className={classnames('form-group', { 'has-error': !!errors.image })}>
+                    <img 
+                    src={this.state.image}
+                    className="rounded-circle"
+                    id="image"
+                    name="image"
+                    onClick={this.uploadImage}
+                    />
                     {!!errors.confirmPassword ? <span className="help-block">{errors.confirmPassword}</span> : ''}
                 </div>
 
