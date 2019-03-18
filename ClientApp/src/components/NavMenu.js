@@ -76,6 +76,11 @@ class NavMenu extends Component {
                  <Glyphicon glyph='th-list' /> Register Form
               </NavItem>
             </LinkContainer>
+            <LinkContainer to={'/microblog'}>
+              <NavItem>
+                 <Glyphicon glyph='th-list' /> Microblog
+              </NavItem>
+            </LinkContainer>
             {isAuthenticated ? userLinks : guestLinks}
           </Nav>
         </Navbar.Collapse>
