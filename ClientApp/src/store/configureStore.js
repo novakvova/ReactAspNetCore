@@ -6,6 +6,7 @@ import * as WeatherForecasts from "./WeatherForecasts";
 import user from "../reducers/user";
 import auth from "../reducers/auth";
 import tags from "../reducers/tags";
+import { microblogReducer } from "../components/microblog/reducer";
 
 export default function configureStore(history, initialState) {
   const reducers = {
@@ -13,7 +14,8 @@ export default function configureStore(history, initialState) {
     weatherForecasts: WeatherForecasts.reducer,
     userlist: user,
     auth,
-    tags
+    tags,
+    microblog: microblogReducer
   };
 
   const middleware = [thunk, routerMiddleware(history)];

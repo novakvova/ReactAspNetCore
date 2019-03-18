@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import get from 'lodash.get';
 
+import * as microblogActions from './reducer';
+
 import PostForm from './postForm';
 
 class MicroblogWidgetContainer extends Component {
@@ -11,9 +13,8 @@ class MicroblogWidgetContainer extends Component {
             <div>
                 {
                     isAuthenticated &&
-                    <PostForm />
+                    <PostForm isValid={this.props.isPostValid} post={this.props.post} onChange={this.props.onChange} />
                 }
-                MicroblogWidget
             </div>
         )
     }
@@ -21,9 +22,19 @@ class MicroblogWidgetContainer extends Component {
 
 const mapState = (state) => {
     return {
-        isAuthenticated: get(state, 'auth.isAuthenticated')
+        isAuthenticated: get(state, 'auth.isAuthenticated'),
+        post: get(state, 'microblog.post'),
+        isPostValid: get(state, 'microblog.post.isValid')
     }
 }
 
-const MicroblogWidget = connect(mapState)(MicroblogWidgetContainer);
+const mapDispatch = (dispatch) => {
+    return {
+        onChange: (path, value) => {
+            dispatch(microblogActions.onValueChange(path, value));
+        }
+    }
+}
+
+const MicroblogWidget = connect(mapState, mapDispatch)(MicroblogWidgetContainer);
 export default MicroblogWidget;
