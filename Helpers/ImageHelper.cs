@@ -10,7 +10,7 @@ namespace WebSiteCore.Helpers
 {
     public static class ImageHelper
     {
-        public static Image FromBase64StringToWebImage(this string base64String)
+        public static Image FromBase64StringToImage(this string base64String)
         {
             byte[] byteBuffer = Convert.FromBase64String(base64String);
             MemoryStream memoryStream = new MemoryStream(byteBuffer);
