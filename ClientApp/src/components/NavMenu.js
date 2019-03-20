@@ -1,4 +1,4 @@
-﻿import React, {Component} from "react";
+﻿import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Glyphicon, Nav, Navbar, NavItem } from "react-bootstrap";
@@ -9,33 +9,33 @@ import "./NavMenu.css";
 
 
 class NavMenu extends Component {
-    state = {}
+  state = {}
 
-    logout(e) {
-        e.preventDefault();
-        this.props.logout();
-    }
-  render() { 
-    const props=this.props;
-    const {isAuthenticated, user} = this.props.auth;
-        console.log(isAuthenticated);
+  logout(e) {
+    e.preventDefault();
+    this.props.logout();
+  }
+  render() {
+    const props = this.props;
+    const { isAuthenticated, user } = this.props.auth;
+    console.log(isAuthenticated);
 
-        const userLinks = (
-            <Navbar.Collapse className="justify-content-end">
-                <Navbar.Text>
-                    {user.name} &nbsp;
+    const userLinks = (
+      <Navbar.Collapse className="justify-content-end">
+        <Navbar.Text>
+          {user.name} &nbsp;
                   <a href="#" onClick={this.logout.bind(this)}><Glyphicon glyph="log-out" /> Logout</a>
-                </Navbar.Text>
-            </Navbar.Collapse>
-        );
+        </Navbar.Text>
+      </Navbar.Collapse>
+    );
 
-        const guestLinks = (
-          <LinkContainer to={"/login"}>
-            <NavItem>
-              <Glyphicon glyph="th-list" /> Login
+    const guestLinks = (
+      <LinkContainer to={"/login"}>
+        <NavItem>
+          <Glyphicon glyph="th-list" /> Login
             </NavItem>
-          </LinkContainer>
-        );
+      </LinkContainer>
+    );
     return (
       <Navbar inverse fixedTop fluid collapseOnSelect>
         <Navbar.Header>
@@ -73,12 +73,17 @@ class NavMenu extends Component {
             </LinkContainer>
             <LinkContainer to={'/register'}>
               <NavItem>
-                 <Glyphicon glyph='th-list' /> Register Form
+                <Glyphicon glyph='th-list' /> Register Form
               </NavItem>
             </LinkContainer>
             <LinkContainer to={'/microblog'}>
               <NavItem>
-                 <Glyphicon glyph='th-list' /> Microblog
+                <Glyphicon glyph='th-list' /> Microblog
+                 </NavItem>
+            </LinkContainer>
+            <LinkContainer to={'/admin'}>
+              <NavItem>
+                <Glyphicon glyph='education' /> Admin Page
               </NavItem>
             </LinkContainer>
             {isAuthenticated ? userLinks : guestLinks}
@@ -90,15 +95,15 @@ class NavMenu extends Component {
 }
 
 NavMenu.propTypes =
-{
+  {
     logout: PropTypes.func.isRequired
-}
+  }
 
-const mapStateToProps=(state)=>{
+const mapStateToProps = (state) => {
   return {
-      auth: state.auth
+    auth: state.auth
   };
 }
- 
+
 export default connect(mapStateToProps, { logout })(NavMenu);
 

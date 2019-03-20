@@ -19,8 +19,7 @@ namespace WebSiteCore.DAL.Entities
         public DbSet<UserImage> UserImages { get; set; }
         public DbSet<Tags> Tags { get; set; }
 
-
-
+        public DbSet<Category> Categories { get; set; }
 
     }
 }
