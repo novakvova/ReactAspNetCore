@@ -76,6 +76,11 @@ class NavMenu extends Component {
                  <Glyphicon glyph='th-list' /> Register Form
               </NavItem>
             </LinkContainer>
+            <LinkContainer to={'/admin'}>
+              <NavItem>
+                 <Glyphicon glyph='education' /> Admin Page
+              </NavItem>
+            </LinkContainer>
             {isAuthenticated ? userLinks : guestLinks}
           </Nav>
         </Navbar.Collapse>
