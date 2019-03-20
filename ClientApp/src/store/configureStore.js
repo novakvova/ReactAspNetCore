@@ -8,6 +8,7 @@ import * as Categories from "./Categories";
 import user from "../reducers/user";
 import auth from "../reducers/auth";
 import tags from "../reducers/tags";
+import { microblogReducer } from "../components/microblog/reducer";
 
 
 export default function configureStore(history, initialState) {
@@ -17,7 +18,8 @@ export default function configureStore(history, initialState) {
     categories:Categories.reducer,
     userlist: user,
     auth,
-    tags
+    tags,
+    microblog: microblogReducer
   };
 
   const middleware = [thunk, routerMiddleware(history)];
