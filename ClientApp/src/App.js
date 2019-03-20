@@ -5,11 +5,11 @@ import Home from "./components/Home";
 import Counter from "./components/Counter";
 import FetchData from "./components/FetchData";
 import LoginPage from "./components/auth/login/LoginPage";
-import UsersListFetchData from "./components/UsersListFetchData";
 import TagsPage from "./components/tag/TagsPage";
 import RegisterPage from './components/auth/register/RegisterPage';
 import AdminPage from './components/admin/AdminPage';
 import EditCategory from "./components/admin/category/EditCategory";
+import UserListPage from "./components/auth/userlist/UserListPage";
 
 export default () => (
   <Layout>
@@ -18,10 +18,9 @@ export default () => (
     <Route path="/fetchdata/:startDateIndex?" component={FetchData} />
     <Route path="/login" component={LoginPage} />
     <Route path="/tags" component={TagsPage} />
-    <Route path="/users/:startDateIndex?" component={UsersListFetchData} />
     <Route path='/register' component={RegisterPage} />
     <Route path='/admin' component={AdminPage} />
     <Route path='/categories/:id'  component={EditCategory} />
-
+    <Route path="/users" component={UserListPage} />
   </Layout>
 );
