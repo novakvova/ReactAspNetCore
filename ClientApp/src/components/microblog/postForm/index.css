@@ -1,0 +1,30 @@
+.ant-form.post-form-container {
+    margin-top: 50px;
+    padding: 30px;
+    border: 1px solid #e1e2e5;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.ant-form .ant-form-item{
+    margin: 0;
+}
+
+#post-name { 
+    height: 40px;
+}
+
+#post-short-description {
+    height: 80px;
+}
+
+#post-description .ql-container{
+    min-height: 160px;
+}
+
+.action-button {
+    font-weight: 700;
+    margin-top: 30px;
+    min-height: 50px;
+    min-width: 160px;
+    float: right;
+}
