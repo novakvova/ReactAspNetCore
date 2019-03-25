@@ -3,17 +3,23 @@ import thunk from "redux-thunk";
 import { routerReducer, routerMiddleware } from "react-router-redux";
 import * as Counter from "./Counter";
 import * as WeatherForecasts from "./WeatherForecasts";
+
+import * as Categories from "./Categories";
 import user from "../reducers/user";
 import auth from "../reducers/auth";
 import tags from "../reducers/tags";
+import { microblogReducer } from "../components/microblog/reducer";
+
 
 export default function configureStore(history, initialState) {
   const reducers = {
     counter: Counter.reducer,
     weatherForecasts: WeatherForecasts.reducer,
+    categories:Categories.reducer,
     userlist: user,
     auth,
-    tags
+    tags,
+    microblog: microblogReducer
   };
 
   const middleware = [thunk, routerMiddleware(history)];
