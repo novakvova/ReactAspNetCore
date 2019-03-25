@@ -75,6 +75,7 @@ namespace WebSiteCore.Controllers
                 var errrors = CustomValidator.GetErrorsByModel(ModelState);
                 return BadRequest(errrors);
             }
+
             var result = await _signInManager
                 .PasswordSignInAsync(credentials.Email, credentials.Password,
                 false, false);
@@ -83,11 +84,34 @@ namespace WebSiteCore.Controllers
             var user = await _userManager.FindByEmailAsync(credentials.Email);
             await _signInManager.SignInAsync(user, isPersistent: false);
             return Ok(CreateToken(user));
-
-
         }
 
-        
+        [HttpPost("socialLogin")]
+        public async Task<IActionResult> SocialNetworkLogin([FromBody]GoogleLoginModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Failed to login with social network");
+            }
+
+            var user = _userManager.FindByEmailAsync(model.Email).Result;
+            if (user == null)
+            {
+                user = new DbUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                };
+                var result = await _userManager.CreateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return BadRequest(new { invalid = "Something went wrong!" });
+                }
+            }
+            await _signInManager.SignInAsync(user, isPersistent: false);
+
+            return Ok(CreateToken(user));
+        }
         string CreateToken(DbUser user)
         {
             var claims = new Claim[]
