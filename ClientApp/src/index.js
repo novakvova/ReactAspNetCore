@@ -1,5 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
+import 'react-quill/dist/quill.snow.css'; 
+import 'antd/dist/antd.css';
 import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';

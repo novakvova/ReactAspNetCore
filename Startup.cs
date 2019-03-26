@@ -14,6 +14,8 @@ using System.Text;
 using WebSiteCore.ActionFilters;
 using WebSiteCore.BLL.Interfaces;
 using WebSiteCore.BLL.Services;
+using WebSiteCore.BLL.Abstraction;
+using WebSiteCore.BLL.Implementation;
 using WebSiteCore.CustomMiddleware;
 using WebSiteCore.DAL.Entities;
 using WebSiteCore.GenericRepos.Abstract;
@@ -37,9 +39,11 @@ namespace WebSiteCore
                 opt.UseSqlServer(Configuration
                     .GetConnectionString("DefaultConnection")));
 
-            //Öüîé ğÿäîê íå ÒĞÎÃÀÒÜ! Öå Ìîÿ Ïğºëºñòü
+            //Ã–Ã¼Ã®Ã© Ã°Ã¿Ã¤Ã®Ãª Ã­Ã¥ Ã’ÃÃÃƒÃ€Ã’Ãœ! Ã–Ã¥ ÃŒÃ®Ã¿ ÃÃ°ÂºÃ«ÂºÃ±Ã²Ã¼
             services.AddScoped<IRepository, EntityFrameworkRepository<EFDbContext>>();
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IMicroblogService, MicroblogService>();
+
             services.AddIdentity<DbUser, IdentityRole>()
                 .AddEntityFrameworkStores<EFDbContext>();
 

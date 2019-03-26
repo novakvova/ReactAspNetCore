@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebSiteCore.DAL.Entities;
 
 namespace WebSiteCore.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    partial class EFDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190319165142_Category tbl")]
+    partial class Categorytbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,34 +195,6 @@ namespace WebSiteCore.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("WebSiteCore.DAL.Entities.Microblog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreatedDate");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(50000);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("ShortDescription")
-                        .IsRequired()
-                        .HasMaxLength(1000);
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("tblMicroblogs");
-                });
-
             modelBuilder.Entity("WebSiteCore.DAL.Entities.UserImage", b =>
                 {
                     b.Property<string>("Id");
@@ -297,13 +271,6 @@ namespace WebSiteCore.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("WebSiteCore.DAL.Entities.Microblog", b =>
-                {
-                    b.HasOne("WebSiteCore.DAL.Entities.DbUser", "User")
-                        .WithMany("Microblogs")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("WebSiteCore.DAL.Entities.UserImage", b =>
