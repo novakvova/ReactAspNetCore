@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebSiteCore.DAL.Entities;
 
 namespace WebSiteCore.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    partial class EFDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190319165142_Category tbl")]
+    partial class Categorytbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,51 +206,26 @@ namespace WebSiteCore.Migrations
                     b.ToTable("tblUserImages");
                 });
 
-            modelBuilder.Entity("WebSiteCore.DAL.Entities.UserProfile", b =>
-                {
-                    b.Property<string>("Id");
-
-                    b.Property<DateTime>("DateOfBirth");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
-
-                    b.Property<string>("MiddleName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserProfiles");
-                });
-
             modelBuilder.Entity("WebSiteCore.Model.Tags", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CreatedBy");
+
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(50000);
+                    b.Property<string>("ModifiedBy");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("ShortDescription")
-                        .IsRequired()
-                        .HasMaxLength(1000);
+                    b.Property<DateTime?>("ModifiedDate");
 
                     b.Property<string>("Name")
                         .IsRequired();
-                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("tblMicroblogs");
+                    b.ToTable("tblTags");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -296,26 +273,11 @@ namespace WebSiteCore.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("WebSiteCore.DAL.Entities.Microblog", b =>
-                {
-                    b.HasOne("WebSiteCore.DAL.Entities.DbUser", "User")
-                        .WithMany("Microblogs")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("WebSiteCore.DAL.Entities.UserImage", b =>
                 {
                     b.HasOne("WebSiteCore.DAL.Entities.DbUser", "User")
                         .WithOne("UserImage")
                         .HasForeignKey("WebSiteCore.DAL.Entities.UserImage", "Id")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("WebSiteCore.DAL.Entities.UserProfile", b =>
-                {
-                    b.HasOne("WebSiteCore.DAL.Entities.DbUser", "User")
-                        .WithMany()
-                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
