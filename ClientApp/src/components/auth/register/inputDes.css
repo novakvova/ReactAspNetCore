@@ -1,0 +1,9 @@
+#inputFile {
+    display: none;
+}
+.div-hidden{
+    display: none;
+}
+.div-visible{
+    display: block;
+}
