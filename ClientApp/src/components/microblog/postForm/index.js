@@ -80,6 +80,7 @@ class PostForm extends Component {
                     </Button>
                     </Form.Item>
                 </Form>
+                <div className="short-cut-container-down"></div>
             </div >
         )
     }

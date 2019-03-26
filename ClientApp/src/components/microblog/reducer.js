@@ -22,7 +22,11 @@ const initialState = {
         loading: false,
         isValid: false
     },
-    list: []
+    list: {
+        data: [],
+        error: false,
+        loading: false
+    },
 }
 
 export const microblogReducer = (state = initialState, action) => {
@@ -39,20 +43,39 @@ export const microblogReducer = (state = initialState, action) => {
             break;
         }
 
+        case GET_LIST_DATA_STARTED: {
+            newState = update.set(state, 'list.loading', true);
+            break;
+        }
+
         case CREATE_POST_SUCCESS: {
             newState = update.set(state, 'post.loading', false);
             newState = update.set(newState, 'post.form', null);
             newState = update(newState, {
                 list: {
-                    $push: [action.payload.data]
+                    data: {
+                        $unshift: [action.payload.data]
+                    }
                 }
             });
+            break;
+        }
+
+        case GET_LIST_DATA_SUCCESS: {
+            newState = update.set(state, 'list.loading', false);
+            newState = update.set(newState, 'list.data', action.payload.data);
             break;
         }
 
         case CREATE_POST_FAILED: {
             newState = update.set(state, 'post.loading', false);
             newState = update.set(newState, 'post.error', true);
+            break;
+        }
+
+        case GET_LIST_DATA_FAILED: {
+            newState = update.set(state, 'list.loading', false);
+            newState = update.set(newState, 'list.error', true);
             break;
         }
 

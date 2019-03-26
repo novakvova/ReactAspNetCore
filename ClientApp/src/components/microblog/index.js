@@ -5,15 +5,17 @@ import get from 'lodash.get';
 import * as microblogActions from './reducer';
 
 import PostForm from './postForm';
+import MicroblogItem from './item';
 
 class MicroblogWidgetContainer extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.props.getListData();
     }
 
     render() {
-        const { isAuthenticated } = this.props;
+        const { isAuthenticated, isListLoading, isListError } = this.props;
+        
         return (
             <div>
                 {
@@ -22,10 +24,17 @@ class MicroblogWidgetContainer extends Component {
                         email={this.props.email}
                         post={this.props.post}
                         isValid={this.props.isPostValid}
-                        isLoading={this.props.isLoading}
-                        isError={this.props.isError}
+                        isLoading={this.props.isPostLoading}
+                        isError={this.props.isPostError}
                         onChange={this.props.onChange}
                         createNewPost={this.props.createNewPost} />
+                }
+                {
+                    !isListLoading && !isListError &&
+                    this.props.list.map(item => {
+                        return <MicroblogItem
+                            {...item} />
+                    })
                 }
             </div>
         )
@@ -38,8 +47,11 @@ const mapState = (state) => {
         email: get(state, 'auth.user.name'),
         post: get(state, 'microblog.post'),
         isPostValid: get(state, 'microblog.post.isValid'),
-        isLoading: get(state, 'microblog.post.loading'),
-        isError: get(state, 'microblog.post.error')
+        isPostLoading: get(state, 'microblog.post.loading'),
+        isPostError: get(state, 'microblog.post.error'),
+        list: get(state, 'microblog.list.data'),
+        isListLoading: get(state, 'microblog.list.loading'),
+        isListError: get(state, 'microblog.list.error')
     }
 }
 
@@ -51,7 +63,7 @@ const mapDispatch = (dispatch) => {
         createNewPost: (model) => {
             dispatch(microblogActions.createNewPost(model));
         },
-        getListData: ()=> {
+        getListData: () => {
             dispatch(microblogActions.getListData());
         }
     }
