@@ -10,7 +10,7 @@ namespace WebSiteCore.DAL.Entities
     [Table("tblUserImages")]
     public class UserImage
     {
-        [ForeignKey("User")]
+        [ForeignKey("User"), Key]
         public string Id { get; set; }
         public string Path { get; set; }
         public virtual DbUser User { get; set; }
