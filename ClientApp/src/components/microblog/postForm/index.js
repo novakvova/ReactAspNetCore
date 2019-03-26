@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import get from 'lodash.get';
 
-import ReactQuill from 'react-quill';
-import { Form, Input, Button } from 'antd';
+import { Form, Button } from 'antd';
+import CommonForm from '../../common/form';
 
-import { isAllFieldsValid, isValid, getValidationErrorMessage } from '../../../helpers/validationHelper';
+import { isAllFieldsValid } from '../../../helpers/validationHelper';
 
 import { contract } from '../constants';
 
@@ -36,54 +36,51 @@ class PostForm extends Component {
         }
     }
 
-    isFieldValid = (path) => {
-        const validationModel = get(contract, `${path}.validation`);
-        const value = get(this.props, get(contract, `${path}.path`));
-        if (value !== null) {
-            return isValid(validationModel, value);
-        }
-        return true;
-    }
-
-    getErrorMessage = (path) => {
-        const validationModel = get(contract, `${path}.validation`);
-        const value = get(this.props, get(contract, `${path}.path`));
-        if (value !== null) {
-            return getValidationErrorMessage(validationModel, value);
-        }
-        return '';
+    onPostClick = () => {
+        this.props.createNewPost({ email: this.props.email, ...this.props.post.form });
     }
 
     render() {
-        const { onChange } = this.props;
+        const { onChange, isLoading, isError } = this.props;
         return (
             <div>
                 <Form className="post-form-container">
-                    <Form.Item
-                        validateStatus={`${!this.isFieldValid('post.name') ? 'error' : ''}`}
-                        help={this.getErrorMessage('post.name')}
+                    <CommonForm.Input
+                        id="post-name"
+                        label="Name"
+                        value={get(this.props, contract.post.name.path)}
+                        path={contract.post.name.path}
+                        disabled={this.props.isLoading}
+                        validation={contract.post.name.validation}
+                        onChange={onChange}>
+                    </CommonForm.Input>
+                    <CommonForm.TextArea
+                        id="post-short-description"
+                        label="Short Description"
+                        value={get(this.props, contract.post.shortDescription.path)}
+                        path={contract.post.shortDescription.path}
+                        disabled={this.props.isLoading}
+                        validation={contract.post.shortDescription.validation}
                         required={true}
-                        label="Name">
-                        <Input id="post-name" onChange={e => { onChange(contract.post.name.path, e.target.value) }} />
-                    </Form.Item>
-                    <Form.Item
-                        validateStatus={`${!this.isFieldValid('post.shortDescription') ? 'error' : ''}`}
-                        help={this.getErrorMessage('post.shortDescription')}
+                        onChange={onChange}>
+                    </CommonForm.TextArea>
+                    <CommonForm.Quil
+                        id="post-description"
+                        label="Description"
+                        value={get(this.props, contract.post.description.path)}
+                        path={contract.post.description.path}
+                        disabled={this.props.isLoading}
+                        validation={contract.post.description.validation}
                         required={true}
-                        label="Short Description">
-                        <Input.TextArea id="post-short-description" onChange={e => { onChange(contract.post.shortDescription.path, e.target.value) }} />
-                    </Form.Item>
-                    <Form.Item
-                        label="Description">
-                        <ReactQuill id="post-description"
-                            onChange={value => { onChange(contract.post.description.path, value) }} />
-                    </Form.Item>
+                        onChange={onChange}>
+                    </CommonForm.Quil>
                     <Form.Item>
-                        <Button disabled={!this.props.isValid} type="primary" className="action-button">
+                        <Button loading={isLoading} disabled={!this.props.isValid || this.props.isLoading} type="primary" className="action-button" onClick={this.onPostClick}>
                             Post
                     </Button>
                     </Form.Item>
                 </Form>
+                <div className="short-cut-container-down"></div>
             </div >
         )
     }

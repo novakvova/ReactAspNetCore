@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebSiteCore.ActionFilters;
+using WebSiteCore.BLL.Abstraction;
+using WebSiteCore.BLL.Implementation;
 using WebSiteCore.CustomMiddleware;
 using WebSiteCore.DAL.Entities;
 using WebSiteCore.GenericRepos.Abstract;
@@ -37,6 +39,7 @@ namespace WebSiteCore
 
             //Цьой рядок не ТРОГАТЬ! Це Моя Прєлєсть
             services.AddScoped<IRepository, EntityFrameworkRepository<EFDbContext>>();
+            services.AddScoped<IMicroblogService, MicroblogService>();
 
             services.AddIdentity<DbUser, IdentityRole>()
                 .AddEntityFrameworkStores<EFDbContext>();

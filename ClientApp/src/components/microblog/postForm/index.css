@@ -2,8 +2,10 @@
     margin-top: 50px;
     padding: 30px;
     border: 1px solid #e1e2e5;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
+    border-bottom: 0;
+    background: #FFFFFF;
+    font-family: "Snell Roundhand";
+  }
 
 .ant-form .ant-form-item{
     margin: 0;
@@ -28,3 +30,4 @@
     min-width: 160px;
     float: right;
 }
+
