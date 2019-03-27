@@ -24,5 +24,7 @@ namespace WebSiteCore.BLL.Models
         //[RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{6,24}$", ErrorMessage = "Password must be at least 8 characters and contain digits, upper and lower case")]
         [Compare("Password", ErrorMessage = "Passwords are different")]
         public string ConfirmPassword { get; set; }
+        [Required(ErrorMessage = "Cant't be empty")]
+        public string ImageBase64 { get; set; }
     }
 }

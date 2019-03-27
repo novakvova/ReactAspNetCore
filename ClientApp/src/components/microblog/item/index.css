@@ -1,0 +1,44 @@
+.microblog-list-container {
+    padding: 30px;
+    border: 1px solid #e1e2e5;
+    border-bottom: 0;
+    border-top: 0;
+    background: #FFFFFF;
+    font-family: "Snell Roundhand";
+}
+
+.microblog-list-item .microblog-list-item-header .microblog-list-item-header-email {
+    float: left;
+    font-weight: 700;
+    color: grey;
+}
+
+.microblog-list-item .microblog-list-item-header .microblog-list-item-header-email i {
+    margin-right: 10px;
+}
+
+.microblog-list-item .microblog-list-item-header .microblog-list-item-header-time {
+    float: right;
+    font-weight: 700;
+    color: grey;
+}
+
+.microblog-list-item .microblog-list-item-name {
+    clear: both;
+    padding-top: 10px;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.microblog-list-item .microblog-list-item-short-description {
+    margin-top: 10px;
+}
+
+.microblog-list-item .microblog-list-item-description {
+    margin-top: 10px;
+}
+
+.microblog-list-item .microblog-list-item-view-more-button {
+    color: lightskyblue;
+    cursor: pointer;
+}
