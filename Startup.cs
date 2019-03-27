@@ -35,7 +35,7 @@ namespace WebSiteCore
                 opt.UseSqlServer(Configuration
                     .GetConnectionString("DefaultConnection")));
 
-            //Цьой рядок не ТРОГАТЬ! Це Моя Прєлєсть
+            //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             services.AddScoped<IRepository, EntityFrameworkRepository<EFDbContext>>();
 
             services.AddIdentity<DbUser, IdentityRole>()

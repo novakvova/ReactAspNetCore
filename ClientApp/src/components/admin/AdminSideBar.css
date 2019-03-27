@@ -1,0 +1,50 @@
+#admin-page {
+    margin-left: -40px;
+    margin-top: -15px;
+    display: flex;
+    margin-right: 0px;
+}
+
+.admin-sidebar {
+    background-color: #212529;
+    width: 225px !important;
+    padding-left: 15px;
+    min-height: calc(100vh - 52px);
+}
+
+.admin-content
+{
+    width: 100%;
+}
+
+.admin-sidebar li {
+    margin: 6px;
+}
+
+.admin-sidebar a {
+    color: rgba(255, 255, 255, 0.5);
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 15px;
+}
+
+.admin-sidebar a:hover, .admin-sidebar a:focus {
+    color: rgba(255, 255, 255, 0.75);
+    background-color: transparent!important;
+}
+
+.admin-sidebar .active a {
+    color: #fff;
+}
+
+@media (max-width: 767px) {
+    .admin-sidebar {
+        width: 150px !important;
+    }
+    .admin-sidebar a {
+        font-size: 12px;
+    }
+    
+}

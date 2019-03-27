@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { actionCreators } from '../../../store/Categories';
-import { Col, Row } from 'react-bootstrap';
 import CategoryList from './CategoryList';
 import AddCategory from './AddCategory';
+import { Col, Row } from 'react-bootstrap';
 
 class CategoryPage extends Component {
 
     render() {
         return (
-            <div>
-                <AddCategory></AddCategory>
-                <CategoryList></CategoryList>
-            </div>
+            <Row>
+                <Col md={8} mdOffset={2}>
+                    <AddCategory></AddCategory>
+                    <CategoryList></CategoryList>
+                </Col>
+            </Row>
         );
     }
 }

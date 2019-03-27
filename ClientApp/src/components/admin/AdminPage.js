@@ -1,28 +1,43 @@
 ﻿import React, { Component } from 'react';
-import { Glyphicon, Nav, Navbar, NavItem, Row, Col,Tabs,Sonnet,Tab } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Nav, Tab, Row, NavItem } from "react-bootstrap";
 import CategoryPage from './category/CategoryPage';
+import TagsPage from '../tag/TagsPage'
+import UserListPage from '../auth/userlist/UserListPage'
+
+import "./AdminSideBar.css";
 
 class AdminPage extends Component {
+
     render() {
         return (
-            <Tabs defaultActiveKey="categories" id="uncontrolled-tab-example">
-                <Tab eventKey="categories" title="Categories">
-                    <CategoryPage />
-                </Tab>
-                <Tab eventKey="*" title="Tags" disabled>
-                   
-                </Tab>
-                <Tab eventKey="*" title="Posts" disabled>
-                    
-                </Tab>
-            </Tabs>
-            // <Row>
-            //     <Col md={4} mdOffset={4}>
-            //         <AdminForm />
-            //     </Col>
-            // </Row>
+            <Tab.Container id="admin-page" defaultActiveKey="categories">
+                <Row>
+                    <Nav variant="pills" className="admin-sidebar">
+                        <NavItem eventKey="categories">
+                            Categories
+                            </NavItem>
+                        <NavItem eventKey="tags">
+                            Tags
+                            </NavItem>
+                            <NavItem eventKey="users">
+                            Users
+                            </NavItem>
+                    </Nav >
+                    <Tab.Content className="admin-content container">
+                        <Tab.Pane eventKey="categories">
+                            <CategoryPage />
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="tags">
+                            <TagsPage></TagsPage>
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="users">
+                            <UserListPage></UserListPage>
+                        </Tab.Pane>
+                    </Tab.Content>
+                </Row>
+            </Tab.Container>
         );
     }
 }
-export default AdminPage;
+  
+  export default AdminPage;

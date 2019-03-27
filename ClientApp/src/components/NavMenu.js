@@ -1,94 +1,102 @@
 ﻿import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { Glyphicon, Nav, Navbar, NavItem } from "react-bootstrap";
+import { Glyphicon, Nav, Navbar, NavItem, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import PropTypes from 'prop-types';
 import { logout } from '../actions/authActions';
 import "./NavMenu.css";
-
-
+import { withRouter } from 'react-router-dom';
 class NavMenu extends Component {
   state = {}
 
   logout(e) {
     e.preventDefault();
     this.props.logout();
+    this.props.history.push('/');
   }
   render() {
-    const props = this.props;
     const { isAuthenticated, user } = this.props.auth;
-    console.log(isAuthenticated);
 
-    const userLinks = (
-      <Navbar.Collapse className="justify-content-end">
-        <Navbar.Text>
-          {user.name} &nbsp;
-                  <a href="#" onClick={this.logout.bind(this)}><Glyphicon glyph="log-out" /> Logout</a>
-        </Navbar.Text>
-      </Navbar.Collapse>
+    const logoutLink = (
+      <NavItem onClick={this.logout.bind(this)}>
+        <Glyphicon glyph="log-out" />Logout
+    </NavItem>
     );
 
-    const guestLinks = (
-      <LinkContainer to={"/login"}>
+    const userLinks = (
+      <Link to='/user' className="navbar-user">
+        {user.name}
+      </Link> 
+    );
+
+    const loginLinks = (
+      <LinkContainer to={"/login"} activeClassName="">
         <NavItem>
-          <Glyphicon glyph="th-list" /> Login
+          Login
             </NavItem>
       </LinkContainer>
     );
     return (
-      <Navbar inverse fixedTop fluid collapseOnSelect>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <Link to={"/"}>WebSiteCore</Link>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-        </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav>
-            <LinkContainer to={"/"} exact>
-              <NavItem>
-                <Glyphicon glyph="home" /> Home
+      <Navbar fluid fixed="top" inverse>
+        <Navbar.Brand>
+          <Link to={"/"}>SimpleBlog</Link>
+        </Navbar.Brand>
+        {isAuthenticated ?userLinks:''}
+        <Nav className="navbar-right">
+          <NavDropdown title={
+            <div style={{ display: 'inline-block' }}>
+              <Glyphicon glyph="list" />
+            </div>
+          } id="basic-nav-dropdown">
+            {/* <NavLink to={"/"} className=''>
+                <NavItem> 
+                  <Glyphicon glyph="home" /> Home
               </NavItem>
-            </LinkContainer>
-            <LinkContainer to={"/counter"}>
+              </NavLink> */}
+            {/* <NavLink to={"/counter"}>
               <NavItem>
                 <Glyphicon glyph="education" /> Counter
               </NavItem>
-            </LinkContainer>
-            <LinkContainer to={"/fetchdata"}>
+            </NavLink>
+            <NavLink to={"/fetchdata"}>
               <NavItem>
                 <Glyphicon glyph="th-list" /> Fetch data
               </NavItem>
-            </LinkContainer>
-            <LinkContainer to={"/users"}>
+            </NavLink> */}
+            {/* <LinkContainer to={"/users"} activeClassName=''>
               <NavItem>
                 <Glyphicon glyph="th-list" /> Users
               </NavItem>
-            </LinkContainer>
-            <LinkContainer to={"/tags"}>
+            </LinkContainer> */}
+            {/* <LinkContainer to={"/tags"} activeClassName=''>
               <NavItem>
                 <Glyphicon glyph="th-list" /> Tags
               </NavItem>
-            </LinkContainer>
-            <LinkContainer to={'/register'}>
-              <NavItem>
-                <Glyphicon glyph='th-list' /> Register Form
+            </LinkContainer> */}
+            {/* <NavLink to={'/register'}className=''>
+                <NavItem>
+                  <Glyphicon glyph='th-list' /> Register Form
               </NavItem>
-            </LinkContainer>
-            <LinkContainer to={'/microblog'}>
+              </NavLink> */}
+            {isAuthenticated ? <LinkContainer to={'/microblog'} activeClassName=''>
               <NavItem>
-                <Glyphicon glyph='th-list' /> Microblog
+                <Glyphicon glyph='plus' /> Microblog
                  </NavItem>
-            </LinkContainer>
-            <LinkContainer to={'/admin'}>
+            </LinkContainer> : ''}
+            {isAuthenticated ? <LinkContainer to={'/user'} activeClassName=''>
               <NavItem>
-                <Glyphicon glyph='education' /> Admin Page
+                <Glyphicon glyph='user' /> Profile
               </NavItem>
-            </LinkContainer>
-            {isAuthenticated ? userLinks : guestLinks}
-          </Nav>
-        </Navbar.Collapse>
+            </LinkContainer> : ''}
+            {isAuthenticated&&user.roles==='Admin' ? <LinkContainer to={'/admin'} activeClassName=''>
+              <NavItem>
+                <Glyphicon glyph='cog' /> Admin
+              </NavItem>
+            </LinkContainer> : ''}
+            {isAuthenticated ? logoutLink : loginLinks}
+          </NavDropdown>
+        </Nav>
       </Navbar>
     );
   }
@@ -105,5 +113,5 @@ const mapStateToProps = (state) => {
   };
 }
 
-export default connect(mapStateToProps, { logout })(NavMenu);
+export default withRouter(connect(mapStateToProps, { logout })(NavMenu));
 

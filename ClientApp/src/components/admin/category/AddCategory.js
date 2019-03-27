@@ -1,52 +1,91 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { actionCreators } from '../../../store/Categories';
-import { Col, Row } from 'react-bootstrap';
+import classnames from 'classnames';
+import { addCategory } from "../../../actions/categoriesActions";
+import PropTypes from 'prop-types';
 
 class AddCategory extends Component {
     state = {
-        errors: ''
+        name: '',
+        errors: {
+        },
+        done: false,
+        isLoading: false
     }
 
-
-    handleSubmit = (e) => {
-        e.preventDefault();
-        const name = this.getName.value;
-        const data = {
-            name: name
+    setStateByErrors = (name, value) => {
+        if (!!this.state.errors[name]) {
+            let errors = Object.assign({}, this.state.errors);
+            delete errors[name];
+            this.setState(
+                {
+                    [name]: value,
+                    errors
+                }
+            )
         }
-        this.props.addCategory(data).then(
-            () => { this.setState({ errors: '' }); },
-            (err) => {
-                this.setState({ errors: err.response.data.error });
-            }
-        );
-        this.getName.value = '';
+        else {
+            this.setState(
+                { [name]: value })
+        }
+    }
+
+    handleChange = (e) => {
+        this.setStateByErrors(e.target.name, e.target.value);
+    }
+
+    onSubmitForm = (e) => {
+
+        e.preventDefault();
+        let errors = {};
+        if (this.state.name === '') errors.name = "Cant't be empty!"
+
+        const isValid = Object.keys(errors).length === 0
+        if (isValid) {
+            const { name } = this.state;
+            this.setState({ isLoading: true });
+            this.props.addCategory({ name: name})
+                .then(
+                    () => {this.setState({ done: true, isLoading: false });this.inputName.value=""},
+                    (err) =>{this.setState({ errors: err.response.data, isLoading: false })}
+                );
+        }
+        else {
+            this.setState({ errors });
+        }
     }
     render() {
+        const { errors, isLoading } = this.state;
         return (
-            <Row>
-                <p></p>
-                <form onSubmit={this.handleSubmit}>
-                    <Col md={4}>
-                        {
-                            !!this.state.errors ?
-                                <div className="alert alert-danger">
-                                    <strong>Error!</strong> {this.state.errors}
-                                </div> : ''}
-                        <input className="form-control" required type="text" ref={(input) => this.getName = input}
-                            placeholder="Enter category name" />
-                        <p></p>
-                        <button className="btn btn-primary mb-2" >Add</button>
-
-                    </Col>
+                <form onSubmit={this.onSubmitForm}>
+                {!!errors.invalid ?
+                    <div className="alert alert-danger">
+                        {errors.invalid}.
+                    </div> : ''}
+                <div className={classnames('form-group', { 'has-error': !!errors.name })}>
+                    <label htmlFor="email">Category name:</label>
+                    <input type="text"
+                        className="form-control"
+                        id="name"
+                        name="name"
+                        value={this.state.name}
+                        onChange={this.handleChange}
+                        ref={input => this.inputName = input} />
+                    {!!errors.name ? <span className="help-block">{errors.name}</span> : ''}
+                </div>
+                <div className="form-group">
+                    <button className="btn btn-success mb-2" disabled={isLoading}>Add</button>
+                    </div>
                 </form>
-            </Row>
         );
     }
 }
-export default connect(
-    state => state.categories,
-    dispatch => bindActionCreators(actionCreators, dispatch))
-    (AddCategory);
+
+
+AddCategory.propTypes =
+    {
+        addCategory: PropTypes.func.isRequired
+    }
+
+export default connect(null, { addCategory })(AddCategory);

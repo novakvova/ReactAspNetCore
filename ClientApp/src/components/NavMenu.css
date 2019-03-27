@@ -2,57 +2,83 @@
     margin-right: 10px;
 }
 
-/* Highlighting rules for nav menu items */
-.navbar .navbar-nav .active a,
-.navbar .navbar-nav .active a:hover,
-.navbar .navbar-nav .active a:focus {
-    background-image: none;
-    background-color: #4189C7;
-    color: white;
+.navbar .navbar-nav a:hover, .navbar .navbar-nav a:focus {
+    color: rgba(255, 255, 255, 0.75);
+    background-color: transparent!important;
+    background-image: none!important;
 }
 
-@media (min-width: 768px) {
-    /* On large screens, convert the nav menu to a vertical sidebar */
-    .navbar {
-        height: 100%;
-        width: calc(25% - 20px);
+.navbar-right {
+    margin-right: 0px;
+    float: right!important;
+    margin: 0;
+}
+
+.navbar {
+    background-color: #343a40;
+    background-image: none;
+    border-radius: 0;
+    border-width: 0;
+    height: 100%;
+    margin-bottom: 0px;
+}
+
+.navbar .container-fluid {
+    padding: 0;
+    margin: 0;
+}
+
+.navbar .container-fluid .navbar-brand {
+    margin: 0;
+    color: #fff!important;
+}
+
+.navbar ul {
+    background-color: #212427
+}
+
+.navbar li {
+    font-size: 15px;
+    margin: 6px;
+}
+
+.navbar li a {
+    color: rgba(255, 255, 255, 0.5);
+    padding: 10px 16px;
+}
+
+.navbar-user
+{
+    right: 80px;
+    position: absolute;
+    font-size: 16px;
+    padding: 15px 15px;
+    color: rgba(255, 255, 255, 0.5);
+    width: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.navbar-user:hover,.navbar-user:focus
+{
+    color: #fff;
+}
+
+
+@media (max-width: 767px) {
+    .navbar-right {
+        float: none!important;
     }
-    .navbar {
+    .navbar .dropdown-toggle {
+        float: right;
+    }
+    ul .dropdown-menu {
+        float: left!important;
+        width: -webkit-fill-available!important;
+        background-color: #27292b!important;
         border-radius: 0;
-        border-width: 0;
-        height: 100%;
     }
-    .navbar-header {
-        float: none;
-    }
-    .navbar .navbar-collapse {
-        border-top: 1px solid #444;
-        padding: 0;
-    }
-    .navbar .container-fluid {
-        padding: 0;
-        margin: 0;
-    }
-    .navbar .container-fluid .navbar-brand {
-        margin: 0;
-    }
-    .navbar ul {
-        float: none;
-    }
-    .navbar li {
-        float: none;
-        font-size: 15px;
-        margin: 6px;
-    }
-    .navbar li a {
-        padding: 10px 16px;
-        border-radius: 4px;
-    }
-    .navbar a {
-        /* If a menu item's text is too long, truncate it */
-        width: 100%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    .navbar-user{
+        width: 200px;
     }
 }

@@ -23,23 +23,45 @@ export function login(data) {
     return dispatch => {
         return axios.post('api/Account/login', data)
         .then(res => {
-            var token=res.data;
-            //console.log("data login", token);
-            var user=jwt.decode(token);
-            //console.log('-----user login------', user);
-            localStorage.setItem('jwtToken', token);
-            setAuthorizationToken(token);
-            dispatch(setCurrentUser(user));
+          loginByJWT(res.data, dispatch);
         });
     }
 }
+
+export function socialLogin(data) {
+  return dispatch => {
+    return axios.post('api/Account/socialLogin', data)
+      .then(res => {
+        loginByJWT(res.data, dispatch);
+      })
+  }
+}
+const loginByJWT = (token, dispatch) => {
+  var user=jwt.decode(token);
+  localStorage.setItem('jwtToken', token);
+  setAuthorizationToken(token);
+  dispatch(setCurrentUser(user));
+} 
 
 export function register(data) {
     console.log('--data--', data);
     return dispatch => {
         return axios.post('api/Account/Register', data)
             .then(res => {
-                console.log("data register", res);
+                //console.log("data register", res);
+                loginByJWT(res.data, dispatch);
             });
     }
 }
+
+export function changePassword(data) {
+    return dispatch => {
+    return axios.post('api/Account/ChangePassword', data);
+    }
+};
+
+export function forgotPassword(data) {
+    return dispatch => {
+    return axios.post('api/Account/ForgotPassword', data);
+    }
+};
