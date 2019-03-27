@@ -109,7 +109,7 @@ class RegisterForm extends Component {
         else {
             this.setState({ errors });
         }
-      )
+      
     }
     render() {
         const { errors, isLoading } = this.state;
@@ -201,6 +201,7 @@ class RegisterForm extends Component {
                 <Redirect to="/" /> : form
         );
     }
+}
     
 RegisterForm.propTypes =
     {
