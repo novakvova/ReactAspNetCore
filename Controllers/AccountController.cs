@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.IdentityModel.Tokens;
 using WebSiteCore.ActionFilters;
-using WebSiteCore.BLL.Interfaces;
+using WebSiteCore.BLL.Abstraction;
 using WebSiteCore.BLL.Models;
 using WebSiteCore.DAL.Entities;
 using WebSiteCore.Helpers;
@@ -36,17 +36,14 @@ namespace WebSiteCore.Controllers
     {
         readonly UserManager<DbUser> _userManager;
         readonly SignInManager<DbUser> _signInManager;
-        readonly IFileService _fileService;
-        readonly EFDbContext _context;
+        readonly IUserService _userService;
         public AccountController(UserManager<DbUser> userManager,
             SignInManager<DbUser> signInManager,
-            IFileService fileService, 
-            EFDbContext context)
+            IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _fileService = fileService;
-            _context = context;
+            _userService = userService;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]CustomRegisterModel model)
@@ -65,20 +62,12 @@ namespace WebSiteCore.Controllers
 
             var result = await _userManager
                 .CreateAsync(user, model.Password);
-            string path = _fileService.UploadImage(model.ImageBase64);
-            var userImage = new UserImage
-            {
-                Id = user.Id,
-                Path = path
-            };
             if (!result.Succeeded)
             {
                 return BadRequest(new { invalid = "Шось пішло не так!" });
             }
-            _context.UserImages.Add(userImage);
-            _context.SaveChanges();
-
-
+            
+            _userService.AddUserProfile(user.Id, model);
             await _signInManager.SignInAsync(user, isPersistent: false);
             return Ok(CreateToken(user));
         }

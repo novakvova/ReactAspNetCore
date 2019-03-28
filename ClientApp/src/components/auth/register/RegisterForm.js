@@ -96,9 +96,11 @@ class RegisterForm extends Component {
 
         const isValid = Object.keys(errors).length === 0
         if (isValid) {
-            const { email, password, confirmPassword, imageBase64 } = this.state;
+            const { email, password, confirmPassword, imageBase64} = this.state;
             this.setState({ isLoading: true });
-            this.props.register({ email, password, confirmPassword, imageBase64 })
+            const firstName='Anna',  middleName='Romanivna', lastName='Veiccho', dateOfBirth='2/3/1999';
+            this.props.register({ email, password, confirmPassword, imageBase64,
+                firstName,  middleName, lastName, dateOfBirth})
                 .then(
                     () => this.setState({ done: true }),
                     (err) => {
@@ -109,7 +111,6 @@ class RegisterForm extends Component {
         else {
             this.setState({ errors });
         }
-      )
     }
     render() {
         const { errors, isLoading } = this.state;
@@ -201,7 +202,7 @@ class RegisterForm extends Component {
                 <Redirect to="/" /> : form
         );
     }
-    
+}
 RegisterForm.propTypes =
     {
         register: PropTypes.func.isRequired
