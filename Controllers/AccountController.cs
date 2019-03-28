@@ -61,22 +61,13 @@ namespace WebSiteCore.Controllers
 
             var result = await _userManager
                 .CreateAsync(user, model.Password);
-            string path = _fileService.UploadImage(model.ImageBase64);
-            var userImage = new UserImage
-            {
-                Id = user.Id,
-                Path = path
-            };
+          
             if (!result.Succeeded)
             {
                 var errrors = CustomValidator.GetErrorsByIdentityResult(result);
                 return BadRequest(errrors);
             }
-            _context.UserImages.Add(userImage);
-            _context.SaveChanges();
-
-
-
+          
             _userService.AddUserProfile(user.Id, model);
             await _signInManager.SignInAsync(user, isPersistent: false);
             return Ok(CreateToken(user));
