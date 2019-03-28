@@ -30,15 +30,18 @@ namespace WebSiteCore.Controllers
         readonly UserManager<DbUser> _userManager;
         readonly SignInManager<DbUser> _signInManager;
         readonly IFileService _fileService;
+        readonly EFDbContext _context;
         readonly IUserService _userService;
         public AccountController(UserManager<DbUser> userManager,
             SignInManager<DbUser> signInManager,
             IFileService fileService,
-            IUserService userService)
+            IUserService userService,
+            EFDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _fileService = fileService;
+            _context = context;
             _userService = userService;
         }
     [HttpPost("register")]
