@@ -6,7 +6,7 @@ import { register } from "../../../actions/authActions";
 import { Redirect } from 'react-router-dom';
 import defaultPath from './default-user.png'
 import './inputDes.css'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Row } from 'react-bootstrap'
 import 'cropperjs/dist/cropper.css';
 import Cropper from 'react-cropper';
 
@@ -82,7 +82,6 @@ class RegisterForm extends Component {
     onSubmitForm = (e) => {
         e.preventDefault();
 
-        //validation
         let errors = {};
         if (!validateemail(this.state.email)) errors.email = "Enter valid email"
         if (this.state.email === '') errors.email = "Cant't be empty"
@@ -98,7 +97,9 @@ class RegisterForm extends Component {
         if (isValid) {
             const { email, password, confirmPassword, imageBase64 } = this.state;
             this.setState({ isLoading: true });
-            this.props.register({ email, password, confirmPassword, imageBase64 })
+            const firstName='Anna',  middleName='Romanivna', lastName='Veiccho', dateOfBirth='2/3/1999';
+            this.props.register({ email, password, confirmPassword, imageBase64,
+                firstName,  middleName, lastName, dateOfBirth})
                 .then(
                     () => this.setState({ done: true }),
                     (err) => {

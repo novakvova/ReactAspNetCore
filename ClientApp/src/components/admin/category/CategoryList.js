@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import EditCategory from "./EditCategory";
-import { requestCategories } from "../../../actions/categoriesActions";
+import { requestCategories,deleteCategory } from "../../../actions/categoriesActions";
 import PropTypes from 'prop-types';
 
 class CategoryList extends Component {
@@ -71,7 +70,8 @@ class CategoryList extends Component {
 
 CategoryList.propTypes =
     {
-        requestCategories: PropTypes.func.isRequired
+        requestCategories: PropTypes.func.isRequired,
+        deleteCategory:PropTypes.func.isRequired
     }
 
 const mapStateToProps = (state) => {
@@ -80,4 +80,4 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default connect(mapStateToProps, { requestCategories })(CategoryList);
+export default connect(mapStateToProps, { requestCategories,deleteCategory })(CategoryList);

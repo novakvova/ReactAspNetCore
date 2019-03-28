@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { requestCategories } from "../actions/categoriesActions";
@@ -7,7 +6,6 @@ import PropTypes from 'prop-types';
 
 class CategoriesPanel extends Component {
     componentWillMount() {
-        // This method runs when the component is first added to the page
         this.props.requestCategories();
     }
 

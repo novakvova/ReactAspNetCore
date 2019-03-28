@@ -3,13 +3,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from "react-router";
 
-export default function (ComposedComponent, roles = '',redirect=true) {
+export default function (ComposedComponent, roles = '') {
   class Authenticate extends React.Component {
 
     state = {
       redirect: false,
-      roles: roles,
-      needToRedirect:redirect
+      roles: roles
     };
     componentWillMount() {
       console.log(this);
@@ -17,10 +16,6 @@ export default function (ComposedComponent, roles = '',redirect=true) {
         if (this.props.roles !== this.state.roles)
           this.setState({ redirect: true })
       if (!this.props.isAuthenticated) {
-        // this.props.addFlashMessage({
-        //   type: 'error',
-        //   text: 'You need to login to access this page'
-        // });
         this.setState({ redirect: true })
       }
     }
@@ -36,8 +31,8 @@ export default function (ComposedComponent, roles = '',redirect=true) {
 
     render() {
       return (
-        this.state.redirect ? this.state.needToRedirect?
-          <Redirect to="/login" /> : '':
+        this.state.redirect ? 
+          <Redirect to="/login" /> :
           <ComposedComponent {...this.props} />
       );
     }

@@ -88,7 +88,6 @@ class ForgotPasswordPage extends Component {
                                 </div> : ''}
 
                             <div className={classnames('form-group', { 'has-error': !!errors.email })}>
-                                {/* <label htmlFor="email">Email</label> */}
                                 <input type="email"
                                     className="form-control"
                                     id="email"

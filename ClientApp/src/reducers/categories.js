@@ -1,21 +1,14 @@
-import {requestCategoriesType,receiveCategoriesType,addCategoryType,editCategoryType,deleteCategoryType} from '../actions/types';
-const initialState = { categories: [], isLoading: false };
+import {receiveCategoriesType,addCategoryType,editCategoryType,deleteCategoryType} from '../actions/types';
+const initialState = { categories: []};
 
 export default (state=initialState, action={}) => {
     state = state || initialState;
   
-    if (action.type === requestCategoriesType) {
-      return {
-        ...state,
-        isLoading: true
-      };
-    }
   
     if (action.type === receiveCategoriesType) {
       return {
         ...state,
-        categories: action.categories,
-        isLoading: false
+        categories: action.categories
       };
     }
   

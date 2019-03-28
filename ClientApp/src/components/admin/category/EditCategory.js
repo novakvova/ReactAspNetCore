@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Col } from 'react-bootstrap';
 import { editCategory } from "../../../actions/categoriesActions";

@@ -20,10 +20,10 @@ export default () => (
     {/* <Route path="/counter" component={Counter} /> */}
     {/* <Route path="/fetchdata/:startDateIndex?" component={FetchData} /> */}
     <Route path="/login" component={LoginPage} />
-    {/* <Route path="/tags" component={TagsPage} /> */}
+    <Route path="/tags" component={TagsPage} />
     <Route path='/register' component={RegisterPage} />
     <Route path='/admin' component={requireAuth(AdminPage,"Admin")} />
-    {/* <Route path="/users" component={UserListPage} />  */}
+    <Route path="/users" component={UserListPage} /> 
     <Route path="/user" component={UserPage} />
     <Route path="/microblog" component={MicroblogWidget} />
     <Route path="/forgotpassword" component={ForgotPasswordPage} />

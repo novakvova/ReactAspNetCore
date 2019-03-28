@@ -29,13 +29,13 @@ class MicroblogWidgetContainer extends Component {
                         onChange={this.props.onChange}
                         createNewPost={this.props.createNewPost} />
                 }
-                {
+                {/* {
                     !isListLoading && !isListError &&
                     this.props.list.map(item => {
                         return <MicroblogItem
                             {...item} />
                     })
-                }
+                } */}
             </div>
         )
     }

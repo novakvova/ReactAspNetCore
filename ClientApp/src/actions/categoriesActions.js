@@ -1,18 +1,15 @@
 import axios from 'axios';
-import {requestCategoriesType,receiveCategoriesType,addCategoryType,editCategoryType,deleteCategoryType} from './types';
+import {receiveCategoriesType,addCategoryType,editCategoryType,deleteCategoryType} from './types';
 
 export function requestCategories() {
 
     return dispatch => {
-    //dispatch({ type: requestCategoriesType });
-
     axios.get('api/Category')
         .then(res => {
             var categories = res.data;
             dispatch({ type: receiveCategoriesType, categories });
         })
     }
-    //dispatch({ type: receiveCategoriesType, categories });
 }
 
 export function addCategory(category) {

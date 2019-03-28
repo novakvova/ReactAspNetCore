@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using WebSiteCore.ActionFilters;
+using WebSiteCore.Helpers;
 
 namespace WebSiteCore.BLL.Models
 {
     public class CustomRegisterModel
     {
-        [CustomEmailAttribute(ErrorMessage = "Already exist")]
+        [CustomEmail(ErrorMessage = "Already exist")]
         [Required(ErrorMessage = "Cant't be empty")]
         [EmailAddress(ErrorMessage = "Invalid email")]
 
@@ -26,5 +26,13 @@ namespace WebSiteCore.BLL.Models
         public string ConfirmPassword { get; set; }
         [Required(ErrorMessage = "Cant't be empty")]
         public string ImageBase64 { get; set; }
+        [Required(ErrorMessage = "Cant't be empty")]
+        public string FirstName { get; set; }
+        [Required(ErrorMessage = "Cant't be empty")]
+        public string MiddleName { get; set; }
+        [Required(ErrorMessage = "Cant't be empty")]
+        public string LastName { get; set; }
+        [CustomDateTime(ErrorMessage = "Date is out of Range")]
+        public DateTime DateOfBirth { get; set; }
     }
 }

@@ -27,13 +27,13 @@ class NavMenu extends Component {
     const userLinks = (
       <Link to='/user' className="navbar-user">
         {user.name}
-      </Link> 
+      </Link>
     );
 
     const loginLinks = (
       <LinkContainer to={"/login"} activeClassName="">
         <NavItem>
-          Login
+          <Glyphicon glyph="log-out" />Login
             </NavItem>
       </LinkContainer>
     );
@@ -42,43 +42,23 @@ class NavMenu extends Component {
         <Navbar.Brand>
           <Link to={"/"}>SimpleBlog</Link>
         </Navbar.Brand>
-        {isAuthenticated ?userLinks:''}
+        {isAuthenticated ? userLinks : ''}
         <Nav className="navbar-right">
           <NavDropdown title={
             <div style={{ display: 'inline-block' }}>
               <Glyphicon glyph="list" />
             </div>
           } id="basic-nav-dropdown">
-            {/* <NavLink to={"/"} className=''>
-                <NavItem> 
-                  <Glyphicon glyph="home" /> Home
-              </NavItem>
-              </NavLink> */}
-            {/* <NavLink to={"/counter"}>
-              <NavItem>
-                <Glyphicon glyph="education" /> Counter
-              </NavItem>
-            </NavLink>
-            <NavLink to={"/fetchdata"}>
-              <NavItem>
-                <Glyphicon glyph="th-list" /> Fetch data
-              </NavItem>
-            </NavLink> */}
-            {/* <LinkContainer to={"/users"} activeClassName=''>
+            <LinkContainer to={"/users"} activeClassName=''>
               <NavItem>
                 <Glyphicon glyph="th-list" /> Users
               </NavItem>
-            </LinkContainer> */}
-            {/* <LinkContainer to={"/tags"} activeClassName=''>
+            </LinkContainer>
+            <LinkContainer to={"/tags"} activeClassName=''>
               <NavItem>
                 <Glyphicon glyph="th-list" /> Tags
               </NavItem>
-            </LinkContainer> */}
-            {/* <NavLink to={'/register'}className=''>
-                <NavItem>
-                  <Glyphicon glyph='th-list' /> Register Form
-              </NavItem>
-              </NavLink> */}
+            </LinkContainer>
             {isAuthenticated ? <LinkContainer to={'/microblog'} activeClassName=''>
               <NavItem>
                 <Glyphicon glyph='plus' /> Microblog
@@ -89,7 +69,7 @@ class NavMenu extends Component {
                 <Glyphicon glyph='user' /> Profile
               </NavItem>
             </LinkContainer> : ''}
-            {isAuthenticated&&user.roles==='Admin' ? <LinkContainer to={'/admin'} activeClassName=''>
+            {isAuthenticated && user.roles === 'Admin' ? <LinkContainer to={'/admin'} activeClassName=''>
               <NavItem>
                 <Glyphicon glyph='cog' /> Admin
               </NavItem>

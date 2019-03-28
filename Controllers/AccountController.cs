@@ -15,12 +15,11 @@ using Microsoft.AspNetCore.Identity.UI.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.IdentityModel.Tokens;
-using WebSiteCore.ActionFilters;
-using WebSiteCore.BLL.Interfaces;
+using WebSiteCore.Helpers;
+using WebSiteCore.BLL.Abstraction;
 using WebSiteCore.BLL.Models;
 using WebSiteCore.DAL.Entities;
-using WebSiteCore.Helpers;
-using static WebSiteCore.BLL.Models.AccountModels;
+using WebSiteCore.BLL.Implementation;
 
 namespace WebSiteCore.Controllers
 {
@@ -31,18 +30,18 @@ namespace WebSiteCore.Controllers
         readonly UserManager<DbUser> _userManager;
         readonly SignInManager<DbUser> _signInManager;
         readonly IFileService _fileService;
-        readonly EFDbContext _context;
+        readonly IUserService _userService;
         public AccountController(UserManager<DbUser> userManager,
             SignInManager<DbUser> signInManager,
-            IFileService fileService, 
-            EFDbContext context)
+            IFileService fileService,
+            IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _fileService = fileService;
-            _context = context;
+            _userService = userService;
         }
-        [HttpPost("register")]
+    [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]CustomRegisterModel model)
         {
             if (!ModelState.IsValid)
@@ -73,6 +72,9 @@ namespace WebSiteCore.Controllers
             _context.UserImages.Add(userImage);
             _context.SaveChanges();
 
+
+
+            _userService.AddUserProfile(user.Id, model);
             await _signInManager.SignInAsync(user, isPersistent: false);
             return Ok(CreateToken(user));
         }
