@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { actionCreators } from '../store/Categories';
+import { requestCategories } from "../actions/categoriesActions";
+import PropTypes from 'prop-types';
 
 class CategoriesPanel extends Component {
     componentWillMount() {
-        // This method runs when the component is first added to the page
         this.props.requestCategories();
     }
-
-    /* componentWillReceiveProps() {
-         // This method runs when incoming props (e.g., route params) change
-         this.props.requestCategories();
-     }*/
 
     renderContext() {
         return (
@@ -37,8 +31,15 @@ class CategoriesPanel extends Component {
     }
 }
 
+CategoriesPanel.propTypes =
+    {
+        requestCategories: PropTypes.func.isRequired
+    }
 
-export default connect(
-    state => state.categories,
-    dispatch => bindActionCreators(actionCreators, dispatch)
-)(CategoriesPanel);
+const mapStateToProps = (state) => {
+    return {
+        categories: state.categories.categories
+    };
+}
+
+export default connect(mapStateToProps, { requestCategories })(CategoriesPanel);

@@ -30,5 +30,17 @@ namespace WebSiteCore.Helpers
             return errors;
         }
 
+        public static IDictionary<string, string> GetErrorsByIdentityResult(
+    IdentityResult result)
+        {
+            var errors = result.Errors
+                .ToDictionary(
+                    kvp => "invalid",
+                    kvp => kvp.Description
+                );
+
+            return errors;
+        }
+
     }
 }

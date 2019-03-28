@@ -7,10 +7,10 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using WebSiteCore.BLL.Interfaces;
+using WebSiteCore.BLL.Abstraction;
 using WebSiteCore.Helpers;
 
-namespace WebSiteCore.BLL.Services
+namespace WebSiteCore.BLL.Implementation
 {
     public class FileService : IFileService
     {

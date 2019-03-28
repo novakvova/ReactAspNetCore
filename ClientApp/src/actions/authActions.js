@@ -53,3 +53,15 @@ export function register(data) {
             });
     }
 }
+
+export function changePassword(data) {
+    return dispatch => {
+    return axios.post('api/Account/ChangePassword', data);
+    }
+};
+
+export function forgotPassword(data) {
+    return dispatch => {
+    return axios.post('api/Account/ForgotPassword', data);
+    }
+};
