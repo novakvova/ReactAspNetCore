@@ -29,7 +29,11 @@ class RegisterForm extends Component {
             isLoading: false,
             isLoadingPhoto: false,
             src: '',
-            imageBase64: defaultPath
+            imageBase64: defaultPath,
+            firstName: '',
+            middleName: '',
+            lastName: '',
+            dateOfBirth: ''
         };
         this.cropImage = this.cropImage.bind(this);
         this.changeInput = this.changeInput.bind(this);
@@ -95,9 +99,10 @@ class RegisterForm extends Component {
 
         const isValid = Object.keys(errors).length === 0
         if (isValid) {
-            const { email, password, confirmPassword, imageBase64 } = this.state;
+            const { email, password, confirmPassword, imageBase64,
+                firstName, middleName, lastName, dateOfBirth} = this.state;
             this.setState({ isLoading: true });
-            const firstName='Anna',  middleName='Romanivna', lastName='Veiccho', dateOfBirth='2/3/1999';
+            // const firstName='Anna',  middleName='Romanivna', lastName='Veiccho', dateOfBirth='2/3/1999';
             this.props.register({ email, password, confirmPassword, imageBase64,
                 firstName,  middleName, lastName, dateOfBirth})
                 .then(
@@ -155,6 +160,46 @@ class RegisterForm extends Component {
                         onChange={this.handleChange} />
                     {!!errors.confirmPassword ? <span className="help-block">{errors.confirmPassword}</span> : ''}
                 </div>
+                <div className={classnames('form-group', { 'has-error': !!errors.firstName })}>
+                    <label htmlFor="firstName">First Name</label>
+                    <input type="text"
+                        className="form-control"
+                        id="firstName"
+                        name="firstName"
+                        value={this.state.firstName}
+                        onChange={this.handleChange} />
+                    {!!errors.firstName ? <span className="help-block">{errors.firstName}</span> : ''}
+                </div>
+                <div className={classnames('form-group', { 'has-error': !!errors.middleName })}>
+                    <label htmlFor="middleName">Middle Name</label>
+                    <input type="text"
+                        className="form-control"
+                        id="middleName"
+                        name="middleName"
+                        value={this.state.middleName}
+                        onChange={this.handleChange} />
+                    {!!errors.middleName ? <span className="help-block">{errors.middleName}</span> : ''}
+                </div>
+                <div className={classnames('form-group', { 'has-error': !!errors.lastName })}>
+                    <label htmlFor="lastName">Last Name</label>
+                    <input type="text"
+                        className="form-control"
+                        id="lastName"
+                        name="lastName"
+                        value={this.state.lastName}
+                        onChange={this.handleChange} />
+                    {!!errors.lastName ? <span className="help-block">{errors.lastName}</span> : ''}
+                </div>
+                <div className={classnames('form-group', { 'has-error': !!errors.dateOfBirth })}>
+                    <label htmlFor="dateOfBirth">Date of Birth</label>
+                    <input type="Date"
+                        className="form-control"
+                        id="dateOfBirth"
+                        name="dateOfBirth"
+                        value={this.state.dateOfBirth}
+                        onChange={this.handleChange} />
+                    {!!errors.dateOfBirth ? <span className="help-block">{errors.dateOfBirth}</span> : ''}
+                </div>
                 <div className='container'>
                 <Row>
                     <div className={classnames('form-group', { 'has-error': !!errors.image })}>
@@ -178,7 +223,7 @@ class RegisterForm extends Component {
                     <div className={!this.state.isLoadingPhoto ? "div-hidden" : "div-visible"} >
                         <Cropper
                             style={{ height: 400, width: '100%', overflow: 'hidden' }}
-                            aspectRatio={16 / 9}
+                            aspectRatio={1/1}
                             preview=".img-preview"
                             guides={false}
                             src={this.state.src}
