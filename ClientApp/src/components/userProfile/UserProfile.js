@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
-// import { changePassword } from "../../actions/userActions";
+ import { getUserProfile } from "../../actions/userActions";
 
 class UserProfile extends Component {
 
@@ -11,12 +11,22 @@ class UserProfile extends Component {
         firstName: '',
         lastName: '',
         middleName: '',
-        birthday: '',
+        dateOfBirth: '',
         email: '',
         userImage: '',
         errors: {
         },
         done: false
+    }
+
+    componentDidMount()
+    {
+        const id = this.props.auth.user.id;
+        this.props.getUserProfile({ id})
+        .then( res=>{
+            this.setState(res.data)
+        }
+        );
     }
 
     setStateByErrors = (name, value) => {
@@ -58,13 +68,13 @@ class UserProfile extends Component {
             const { oldPassword, newPassword } = this.state;
             const id = this.props.auth.user.id;
             this.setState({ isLoading: true });
-            // this.props.changePassword({ id, oldPassword, newPassword })
-            //     .then(
-            //         () => this.setState({ done: true }),
-            //         (err) => {
-            //             this.setState({ errors: err.response.data, isLoading: false });
-            //         }
-            //     );
+            this.props.getUserProfile({ id})
+                .then(
+                    (res) => this.setState({ done: true }),
+                    (err) => {
+                        this.setState({ errors: err.response.data, isLoading: false });
+                    }
+                );
         }
         else {
             this.setState({ errors });
@@ -73,17 +83,17 @@ class UserProfile extends Component {
 
     render() {
 
-        this.state = {
-            firstName: 'Vlad',
-            lastName: 'Maksymchuk',
-            middleName: 'Vasilovich',
-            birthday: '09/09/97',
-            email: 'regvlad7@gmail.com',
-            userImage: '..',
-            errors: {
-            },
-            done: false
-        }
+        // this.state = {
+        //     firstName: 'Vlad',
+        //     lastName: 'Maksymchuk',
+        //     middleName: 'Vasilovich',
+        //     birthday: '09/09/97',
+        //     email: 'regvlad7@gmail.com',
+        //     userImage: '..',
+        //     errors: {
+        //     },
+        //     done: false
+        // }
 
         const { errors, isLoading } = this.state;
         return (
@@ -143,15 +153,15 @@ class UserProfile extends Component {
                 </div>
 
 
-                <div className={classnames('form-group', { 'has-error': !!errors.birthday })}>
-                    <label htmlFor="birthday">Date of Birth:</label>
+                <div className={classnames('form-group', { 'has-error': !!errors.dateOfBirth })}>
+                    <label htmlFor="dateOfBirth">Date of Birth:</label>
                     <input type="text"
                         className="form-control"
-                        id="birthday"
-                        name="birthday"
-                        value={this.state.birthday}
+                        id="dateOfBirth"
+                        name="dateOfBirth"
+                        value={this.state.dateOfBirth}
                         onChange={this.handleChange} />
-                    {!!errors.birthday ? <span className="help-block">{errors.birthday}</span> : ''}
+                    {!!errors.dateOfBirth ? <span className="help-block">{errors.dateOfBirth}</span> : ''}
                 </div>
 
                 <div className={classnames('form-group', { 'has-error': !!errors.email })}>
@@ -182,7 +192,7 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default connect(mapStateToProps, { /*changePassword*/ })(UserProfile);
+export default connect(mapStateToProps, { getUserProfile })(UserProfile);
 
 
 // <Row>

@@ -52,6 +52,11 @@ namespace WebSiteCore
                 options.Password.RequiredUniqueChars = 0;
             });
 
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
+
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is the secret phrase"));
 
             services.AddAuthentication(options =>

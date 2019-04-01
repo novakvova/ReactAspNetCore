@@ -18,3 +18,9 @@ export function getUsers() {
     });
   };
 }
+
+export function getUserProfile(data) {
+  return dispatch => {
+    return axios.post("api/User/user",data);
+  };
+}

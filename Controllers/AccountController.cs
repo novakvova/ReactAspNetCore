@@ -25,6 +25,7 @@ namespace WebSiteCore.Controllers
 {
     [Produces("application/json")]
     [Route("api/Account")]
+    [RequireHttps]
     public class AccountController : ControllerBase
     {
         readonly UserManager<DbUser> _userManager;
@@ -192,12 +193,12 @@ namespace WebSiteCore.Controllers
                 return BadRequest(new { invalid = "User with this email was not found" });
             }
 
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-            EmailService emailService = new EmailService();
-            await emailService.SendEmailAsync(model.Email, "Reset Password",
-                $"Для сброса пароля пройдите по ссылке: <a href='{callbackUrl}'>link</a>");
 
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                await _emailSender.SendEmailAsync(model.Email, "Reset Password",
+                   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
+ 
             return Ok(new { answer = "Check your email" });
         }
 
