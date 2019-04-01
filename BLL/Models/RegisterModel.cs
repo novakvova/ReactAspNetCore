@@ -22,7 +22,7 @@ namespace WebSiteCore.BLL.Models
 
         [Required(ErrorMessage = "Cant't be empty")]
         //[RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{6,24}$", ErrorMessage = "Password must be at least 8 characters and contain digits, upper and lower case")]
-        [Compare("Password", ErrorMessage = "Passwords are different")]
+        [Compare("Password", ErrorMessage = "Passwords do not matcht")]
         public string ConfirmPassword { get; set; }
         [Required(ErrorMessage = "Cant't be empty")]
         public string ImageBase64 { get; set; }

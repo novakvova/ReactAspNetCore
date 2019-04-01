@@ -62,5 +62,13 @@ namespace WebSiteCore.Controllers
         public void Delete(int id)
         {
         }
+
+        //Vlad Maksymchuk
+        //[HttpPost("user")]
+        //[Authorize]
+        //public async Task<IActionResult> Get([FromBody]UserProfileModel model)
+        //{
+
+        //}
     }
 }
