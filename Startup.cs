@@ -17,6 +17,9 @@ using WebSiteCore.BLL.Implementation;
 using WebSiteCore.DAL.Entities;
 using WebSiteCore.GenericRepos.Abstract;
 using WebSiteCore.GenericRepos.Repository;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace WebSiteCore
 {
@@ -95,10 +98,22 @@ namespace WebSiteCore
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseHttpsRedirection();
             app.UseSpaStaticFiles();
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"UserImages")),
+                RequestPath = new PathString("/UserImages")
+            });
+
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(
+            //    Path.Combine(Directory.GetCurrentDirectory(), @"/AppData/UserImages")),
+            //    RequestPath = new Microsoft.AspNetCore.Http.PathString("/UserImages")
+            //});
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 

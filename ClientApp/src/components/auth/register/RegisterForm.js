@@ -212,7 +212,7 @@ class RegisterForm extends Component {
                                         id="image"
                                         name="image"
                                         width="250"
-                                    /> :
+                                    /> : 
                                    <p></p>
                             }
                             {!!errors.image ? <span className="help-block">{errors.image}</span> : ''}
@@ -220,9 +220,9 @@ class RegisterForm extends Component {
                         </label>
                     </div>
 
-                    <div className={!this.state.isLoadingPhoto ? "div-hidden" : "div-visible"} >
+                    <div className={!this.state.isLoadingPhoto ? "div-hidden" : "div-visible form-group"} >
                         <Cropper
-                            style={{ height: 400, width: '100%', overflow: 'hidden' }}
+                            style={{ height: 400, width: 400, overflow: 'hidden' }}
                             aspectRatio={1/1}
                             preview=".img-preview"
                             guides={false}

@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
-// import { changePassword } from "../../actions/userActions";
+ import { getUserProfile } from "../../actions/userActions";
 
 class UserProfile extends Component {
 
@@ -11,12 +11,22 @@ class UserProfile extends Component {
         firstName: '',
         lastName: '',
         middleName: '',
-        birthday: '',
+        dateOfBirth: '',
         email: '',
         userImage: '',
         errors: {
         },
         done: false
+    }
+
+    componentDidMount()
+    {
+        const id = this.props.auth.user.id;
+        this.props.getUserProfile({ id})
+        .then( res=>{
+            this.setState(res.data)
+        }
+        );
     }
 
     setStateByErrors = (name, value) => {
@@ -58,13 +68,13 @@ class UserProfile extends Component {
             const { oldPassword, newPassword } = this.state;
             const id = this.props.auth.user.id;
             this.setState({ isLoading: true });
-            // this.props.changePassword({ id, oldPassword, newPassword })
-            //     .then(
-            //         () => this.setState({ done: true }),
-            //         (err) => {
-            //             this.setState({ errors: err.response.data, isLoading: false });
-            //         }
-            //     );
+            this.props.getUserProfile({ id})
+                .then(
+                    (res) => this.setState({ done: true }),
+                    (err) => {
+                        this.setState({ errors: err.response.data, isLoading: false });
+                    }
+                );
         }
         else {
             this.setState({ errors });
@@ -73,17 +83,17 @@ class UserProfile extends Component {
 
     render() {
 
-        this.state = {
-            firstName: 'Vlad',
-            lastName: 'Maksymchuk',
-            middleName: 'Vasilovich',
-            birthday: '09/09/97',
-            email: 'regvlad7@gmail.com',
-            userImage: '..',
-            errors: {
-            },
-            done: false
-        }
+        // this.state = {
+        //     firstName: 'Vlad',
+        //     lastName: 'Maksymchuk',
+        //     middleName: 'Vasilovich',
+        //     birthday: '09/09/97',
+        //     email: 'regvlad7@gmail.com',
+        //     userImage: '..',
+        //     errors: {
+        //     },
+        //     done: false
+        // }
 
         const { errors, isLoading } = this.state;
         return (
@@ -94,7 +104,6 @@ class UserProfile extends Component {
                     <div className="alert alert-danger">
                         <strong>Danger!</strong> {errors.invalid}.
                 </div> : ''}
-
                 {this.state.done ?
                     <div className="alert alert-success">
                         <strong>Danger!</strong> {errors.invalid}.
@@ -102,7 +111,7 @@ class UserProfile extends Component {
                 } */}
 
                 <div align="center"> 
-                <img alt="User Pic" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" id="profile-image1" className="img-circle img-responsive" width="100" />
+                <img alt="User Pic" src={this.state.userImage} id="profile-image1" className="img-circle" width="100" />
                     <input id="profile-image-upload" className="hidden" type="file" />
                     <div>click here to change profile image</div>
                 </div>
@@ -143,15 +152,15 @@ class UserProfile extends Component {
                 </div>
 
 
-                <div className={classnames('form-group', { 'has-error': !!errors.birthday })}>
-                    <label htmlFor="birthday">Date of Birth:</label>
+                <div className={classnames('form-group', { 'has-error': !!errors.dateOfBirth })}>
+                    <label htmlFor="dateOfBirth">Date of Birth:</label>
                     <input type="text"
                         className="form-control"
-                        id="birthday"
-                        name="birthday"
-                        value={this.state.birthday}
+                        id="dateOfBirth"
+                        name="dateOfBirth"
+                        value={this.state.dateOfBirth}
                         onChange={this.handleChange} />
-                    {!!errors.birthday ? <span className="help-block">{errors.birthday}</span> : ''}
+                    {!!errors.dateOfBirth ? <span className="help-block">{errors.dateOfBirth}</span> : ''}
                 </div>
 
                 <div className={classnames('form-group', { 'has-error': !!errors.email })}>
@@ -182,30 +191,4 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default connect(mapStateToProps, { /*changePassword*/ })(UserProfile);
-
-
-// <Row>
-//                                     <Col md={2}>
-//                                         <img src="https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?fit=256%2C256&quality=100&ssl=1" width='100'></img>
-//                                     </Col>
-//                                 </Row>
-//                                 <Row>
-//                                     <Col md={4}>
-//                                         <Row>First Name: </Row>
-//                                         <Row>Middle Name: </Row>
-//                                         <Row>Last Name: </Row>
-//                                         <Row>Date Of Birth: </Row>
-//                                     </Col>
-//                                     <Col md={2}>
-//                                         <Row>Prasad </Row>
-//                                         <Row>Shankar </Row>
-//                                         <Row>Huddedar </Row>
-//                                         <Row>11 Jun 1998 </Row>
-//                                     </Col>
-//                                 </Row>
-
-//                                 <br></br>
-//                                 <div className="col-md-4">
-//                                     <button type="submit" className="btn btn-info btn-block" >Edit Profile</button>
-//                                 </div>
+export default connect(mapStateToProps, { getUserProfile })(UserProfile);

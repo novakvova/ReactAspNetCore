@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,6 +40,30 @@ namespace WebSiteCore.BLL.Implementation
             };
             _context.UserProfiles.Add(userProfile);
             _context.SaveChanges();
+        }
+        public UserProfileModel GetUserProfile(string id)
+        {
+            var profile = _context.UserProfiles.Where(x => x.Id == id).Select(p => new UserProfileModel
+            {
+                DateOfBirth = p.DateOfBirth.ToShortDateString(),
+                FirstName = p.FirstName,
+                MiddleName = p.MiddleName,
+                LastName = p.LastName,
+                Email = p.User.Email
+            }).Single();
+            profile.UserImage = GetImageUser(id); 
+            return profile;
+        }
+        public string GetImageUser(string id)
+        {
+            var image = _context.UserImages.SingleOrDefault(p => p.Id == id);
+            var imageName = "";
+            if (image != null)
+                imageName = image.Path;
+            HttpContextAccessor httpContext = new HttpContextAccessor();
+            var Current = httpContext.HttpContext;
+            var path = $"{Current.Request.Scheme}://{Current.Request.Host}{Current.Request.PathBase}" + "/UserImages/" + imageName;
+            return path;
         }
     }
 }
