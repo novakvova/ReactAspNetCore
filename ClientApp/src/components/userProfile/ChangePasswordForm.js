@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { changePassword } from "../../actions/authActions";
 import PropTypes from 'prop-types';
 
+
 class ChangePasswordForm extends Component {
 
     state = {

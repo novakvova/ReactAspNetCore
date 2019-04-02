@@ -20,6 +20,8 @@ using WebSiteCore.GenericRepos.Repository;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.UI.Services;
+
 
 namespace WebSiteCore
 {
@@ -45,15 +47,26 @@ namespace WebSiteCore
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IMicroblogService, MicroblogService>();
 
-            services.AddIdentity<DbUser, IdentityRole>()
-                .AddEntityFrameworkStores<EFDbContext>();
+            services.AddTransient<IEmailSender, EmailSender>();
 
+            services.AddIdentity<DbUser, IdentityRole>()
+                .AddEntityFrameworkStores<EFDbContext>()
+                .AddDefaultTokenProviders(); 
             services.Configure<IdentityOptions>(options =>
             {
                 // Default Password settings.
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredUniqueChars = 0;
             });
+
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
+
+            
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is the secret phrase"));
 
@@ -107,13 +120,6 @@ namespace WebSiteCore
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"UserImages")),
                 RequestPath = new PathString("/UserImages")
             });
-
-            //app.UseStaticFiles(new StaticFileOptions
-            //{
-            //    FileProvider = new PhysicalFileProvider(
-            //    Path.Combine(Directory.GetCurrentDirectory(), @"/AppData/UserImages")),
-            //    RequestPath = new Microsoft.AspNetCore.Http.PathString("/UserImages")
-            //});
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 

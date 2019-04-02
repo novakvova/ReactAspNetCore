@@ -83,18 +83,6 @@ class UserProfile extends Component {
 
     render() {
 
-        // this.state = {
-        //     firstName: 'Vlad',
-        //     lastName: 'Maksymchuk',
-        //     middleName: 'Vasilovich',
-        //     birthday: '09/09/97',
-        //     email: 'regvlad7@gmail.com',
-        //     userImage: '..',
-        //     errors: {
-        //     },
-        //     done: false
-        // }
-
         const { errors, isLoading } = this.state;
         return (
             <form onSubmit={this.onSubmitForm}>
@@ -111,6 +99,7 @@ class UserProfile extends Component {
                 } */}
 
                 <div align="center"> 
+
                 <img alt="User Pic" src={this.state.userImage} id="profile-image1" className="img-circle" width="100" />
                     <input id="profile-image-upload" className="hidden" type="file" />
                     <div>click here to change profile image</div>

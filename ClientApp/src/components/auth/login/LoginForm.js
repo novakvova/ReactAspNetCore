@@ -10,6 +10,30 @@ import FacebookLogin from 'react-facebook-login';
 
 class LoginForm extends Component {
 
+  constructor(props)	
+  {	
+    super(props);	
+    this.signUp=this.signUp.bind(this);	
+  }	
+  signUp(res, type){	
+    let postData;	
+    console.log(res);
+    if(type === 'google')	
+    {	
+      postData = {Email: res.profileObj.email, Name: res.profileObj.name};	
+    }	
+    if(type == 'facebook')	
+    {	
+      postData = {Email: res.email, Name: res.name};	
+    }	
+    console.log(postData);	
+    this.props.socialLogin(postData)	
+      .then(	
+        () => this.setState({ done: true }),	
+        (err) => this.setState({ errors: err.response.data, isLoading: false })	
+      );	
+  }
+
   state = {
     email: '',
     password: '',
@@ -117,10 +141,11 @@ class LoginForm extends Component {
           onFailure={responseGoogle}/>
         <p></p>
         <FacebookLogin
-          appId="664007177351901"
+          appId="2527437730617232"
           autoLoad={true}
           fields="name,email,picture"
-          callback={responseFacebook} />
+          callback={responseFacebook} 
+          />
           </div>
       </React.Fragment>
     );

@@ -23,25 +23,24 @@ namespace WebSiteCore.Controllers
     {
         readonly UserManager<DbUser> _userManager;
         readonly IUserService _userService;
-        readonly EFDbContext _context;
         public UserController(UserManager<DbUser> userManager,
-                        IUserService userService,
-                        EFDbContext context)
+                        IUserService userService)
         {
             _userManager = userManager;
             _userService = userService;
-            _context = context;
+
         }
 
         // GET: api/User
         [HttpGet("list")]
         public IEnumerable<ApplicationUserListViewModel> Get()
         {
-            var model= _userManager.Users.Select(u=>new ApplicationUserListViewModel
+            var model = _userManager.Users.Select(u => new ApplicationUserListViewModel
             {
                 Id = u.Id,
                 Email = u.Email
             }).ToList();
+
             return model;
         }
 
@@ -69,7 +68,6 @@ namespace WebSiteCore.Controllers
         public void Delete(int id)
         {
         }
-        
         [HttpPost("user")]
         [Authorize]
         public async Task<IActionResult> Get([FromBody]UserProfileGetModel model)
@@ -81,6 +79,7 @@ namespace WebSiteCore.Controllers
             }
 
             var profile = _userService.GetUserProfile(model.Id);
+
             return Ok(profile);
         }
     }

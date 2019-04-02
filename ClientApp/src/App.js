@@ -13,12 +13,13 @@ import MicroblogWidget from "./components/microblog";
 import UserPage from "./components/userProfile/UserPage";
 import ForgotPasswordPage from "./components/auth/ForgotPasswordPage";
 import requireAuth from "./utils/requireAuth";
+import ResetPasswordPage from "./components/auth/ResetPasswordPage";
 
 export default () => (
   <Layout>
     <Route exact path="/" component={Home} />
     {/* <Route path="/counter" component={Counter} /> */}
-    {/* <Route path="/fetchdata/:startDateIndex?" component={FetchData} /> */}
+    <Route path="/fetchdata/:startDateIndex?" component={FetchData} />
     <Route path="/login" component={LoginPage} />
     <Route path="/tags" component={TagsPage} />
     <Route path='/register' component={RegisterPage} />
@@ -27,5 +28,6 @@ export default () => (
     <Route path="/user" component={UserPage} />
     <Route path="/microblog" component={MicroblogWidget} />
     <Route path="/forgotpassword" component={ForgotPasswordPage} />
+    <Route path="/resetpassword" component={ResetPasswordPage} />
   </Layout>
 );
