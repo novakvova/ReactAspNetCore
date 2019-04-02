@@ -27,12 +27,12 @@ class AdminPage extends Component {
                         <Tab.Pane eventKey="categories">
                             <CategoryPage />
                         </Tab.Pane>
-                        <Tab.Pane eventKey="tags">
+                        {/* <Tab.Pane eventKey="tags">
                             <TagsPage></TagsPage>
                         </Tab.Pane>
                         <Tab.Pane eventKey="users">
                             <UserListPage></UserListPage>
-                        </Tab.Pane>
+                        </Tab.Pane> */}
                     </Tab.Content>
                 </Row>
             </Tab.Container>

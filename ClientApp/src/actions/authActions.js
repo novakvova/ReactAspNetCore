@@ -65,3 +65,10 @@ export function forgotPassword(data) {
     return axios.post('api/Account/ForgotPassword', data);
     }
 };
+
+export function resetPassword(data) {
+  return dispatch => {
+  return axios.post('api/Account/ResetPassword', data);
+  }
+};
+

@@ -12,7 +12,7 @@ class UserPage extends Component {
                     <Panel>
                         <Col md={6}>
                             <Panel>
-                                {/* <UserProfile></UserProfile> */}
+                                <UserProfile></UserProfile>
                             </Panel>
                         </Col>
                         <Col md={6}>

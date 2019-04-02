@@ -40,5 +40,17 @@ namespace WebSiteCore.BLL.Implementation
             _context.UserProfiles.Add(userProfile);
             _context.SaveChanges();
         }
+
+        public UserProfileModel GetUserProfile(string id)
+        {
+            var profile = _context.UserProfiles.Where(x => x.Id == id).Select(p=> new UserProfileModel { DateOfBirth=p.DateOfBirth.ToShortDateString(),
+                FirstName =p.FirstName,
+                MiddleName =p.MiddleName,
+            LastName=p.LastName,
+            Email=p.User.Email}).Single();
+
+            return profile;
+
+        }
     }
 }
