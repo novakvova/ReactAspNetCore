@@ -20,6 +20,7 @@ using WebSiteCore.BLL.Abstraction;
 using WebSiteCore.BLL.Models;
 using WebSiteCore.DAL.Entities;
 using WebSiteCore.BLL.Implementation;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace WebSiteCore.Controllers
 {
@@ -33,10 +34,12 @@ namespace WebSiteCore.Controllers
         readonly IFileService _fileService;
         readonly EFDbContext _context;
         readonly IUserService _userService;
+        readonly IEmailSender _emailSender;
         public AccountController(UserManager<DbUser> userManager,
             SignInManager<DbUser> signInManager,
             IFileService fileService,
             IUserService userService,
+            IEmailSender emailSender,
             EFDbContext context)
         {
             _userManager = userManager;
@@ -44,6 +47,7 @@ namespace WebSiteCore.Controllers
             _fileService = fileService;
             _context = context;
             _userService = userService;
+            _emailSender = emailSender;
         }
     [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]CustomRegisterModel model)
@@ -193,40 +197,42 @@ namespace WebSiteCore.Controllers
                 return BadRequest(new { invalid = "User with this email was not found" });
             }
 
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
- 
+            var callbackUrl = Url.Action(
+                "",
+                "resetpassword",
+                //pageHandler: null,
+                values: new { userId = user.Id, code = code },
+                protocol: Request.Scheme);
+            await _emailSender.SendEmailAsync(model.Email, "Reset Password",
+               $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
+
             return Ok(new { answer = "Check your email" });
         }
 
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-        //    var user = await _userManager.FindByNameAsync(model.Email);
-        //    if (user == null)
-        //    {
-        //        return View("ResetPasswordConfirmation");
-        //    }
-        //    var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
-        //    if (result.Succeeded)
-        //    {
-        //        return View("ResetPasswordConfirmation");
-        //    }
-        //    foreach (var error in result.Errors)
-        //    {
-        //        ModelState.AddModelError(string.Empty, error.Description);
-        //    }
-        //    return View(model);
-        //}
+        [HttpPost("ResetPassword")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errrors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errrors);
+            }
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            if (user == null)
+            {
+                return BadRequest(new { invalid = "User is not found" });
+            }
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (!result.Succeeded)
+            {
+                var errrors = CustomValidator.GetErrorsByIdentityResult(result);
+                return BadRequest(errrors);
+            }
+            return Ok();
+        }
     }
 
 }

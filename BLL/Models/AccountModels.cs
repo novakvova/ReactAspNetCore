@@ -24,8 +24,7 @@ namespace WebSiteCore.BLL.Models
     public class ResetPasswordViewModel
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        public string UserId { get; set; }
 
         [Required(ErrorMessage = "Cant't be empty")]
         [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{6,24}$", ErrorMessage = "Password must be at least 6 characters and contain digits, upper and lower case")]

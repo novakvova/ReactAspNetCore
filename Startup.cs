@@ -17,6 +17,7 @@ using WebSiteCore.BLL.Implementation;
 using WebSiteCore.DAL.Entities;
 using WebSiteCore.GenericRepos.Abstract;
 using WebSiteCore.GenericRepos.Repository;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace WebSiteCore
 {
@@ -42,9 +43,11 @@ namespace WebSiteCore
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IMicroblogService, MicroblogService>();
 
-            services.AddIdentity<DbUser, IdentityRole>()
-                .AddEntityFrameworkStores<EFDbContext>();
+            services.AddTransient<IEmailSender, EmailSender>();
 
+            services.AddIdentity<DbUser, IdentityRole>()
+                .AddEntityFrameworkStores<EFDbContext>()
+                .AddDefaultTokenProviders(); 
             services.Configure<IdentityOptions>(options =>
             {
                 // Default Password settings.
@@ -56,6 +59,10 @@ namespace WebSiteCore
             {
                 options.Filters.Add(new RequireHttpsAttribute());
             });
+
+            
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is the secret phrase"));
 

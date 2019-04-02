@@ -56,7 +56,7 @@ class ForgotPasswordPage extends Component {
             this.setState({ isLoading: true });
             this.props.forgotPassword({ email })
                 .then(
-                    (res) => this.setState({ done: true, serverAnswer: res }),
+                    (res) => this.setState({ done: true, serverAnswer: res.data.answer }),
                     (err) => {
                         this.setState({ errors: err.response.data, isLoading: false });
                     }
