@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -27,13 +28,13 @@ namespace WebSiteCore.Controllers
         {
             _userManager = userManager;
             _userService = userService;
+
         }
 
         // GET: api/User
         [HttpGet("list")]
         public IEnumerable<ApplicationUserListViewModel> Get()
         {
-
             var model = _userManager.Users.Select(u => new ApplicationUserListViewModel
             {
                 Id = u.Id,
@@ -67,8 +68,6 @@ namespace WebSiteCore.Controllers
         public void Delete(int id)
         {
         }
-
-        //Vlad Maksymchuk
         [HttpPost("user")]
         [Authorize]
         public async Task<IActionResult> Get([FromBody]UserProfileGetModel model)

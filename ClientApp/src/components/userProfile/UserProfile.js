@@ -92,7 +92,6 @@ class UserProfile extends Component {
                     <div className="alert alert-danger">
                         <strong>Danger!</strong> {errors.invalid}.
                 </div> : ''}
-
                 {this.state.done ?
                     <div className="alert alert-success">
                         <strong>Danger!</strong> {errors.invalid}.
@@ -100,7 +99,8 @@ class UserProfile extends Component {
                 } */}
 
                 <div align="center"> 
-                <img alt="User Pic" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" id="profile-image1" className="img-circle" width="100" />
+
+                <img alt="User Pic" src={this.state.userImage} id="profile-image1" className="img-circle" width="100" />
                     <input id="profile-image-upload" className="hidden" type="file" />
                     <div>click here to change profile image</div>
                 </div>
@@ -181,29 +181,3 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, { getUserProfile })(UserProfile);
-
-
-// <Row>
-//                                     <Col md={2}>
-//                                         <img src="https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?fit=256%2C256&quality=100&ssl=1" width='100'></img>
-//                                     </Col>
-//                                 </Row>
-//                                 <Row>
-//                                     <Col md={4}>
-//                                         <Row>First Name: </Row>
-//                                         <Row>Middle Name: </Row>
-//                                         <Row>Last Name: </Row>
-//                                         <Row>Date Of Birth: </Row>
-//                                     </Col>
-//                                     <Col md={2}>
-//                                         <Row>Prasad </Row>
-//                                         <Row>Shankar </Row>
-//                                         <Row>Huddedar </Row>
-//                                         <Row>11 Jun 1998 </Row>
-//                                     </Col>
-//                                 </Row>
-
-//                                 <br></br>
-//                                 <div className="col-md-4">
-//                                     <button type="submit" className="btn btn-info btn-block" >Edit Profile</button>
-//                                 </div>

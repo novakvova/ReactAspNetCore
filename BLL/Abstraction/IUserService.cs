@@ -10,7 +10,7 @@ namespace WebSiteCore.BLL.Abstraction
     public interface IUserService
     {
         void AddUserProfile(string id, CustomRegisterModel model);
-
         UserProfileModel GetUserProfile(string id);
+        string GetImageUser(string id);
     }
 }

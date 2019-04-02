@@ -17,7 +17,11 @@ using WebSiteCore.BLL.Implementation;
 using WebSiteCore.DAL.Entities;
 using WebSiteCore.GenericRepos.Abstract;
 using WebSiteCore.GenericRepos.Repository;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.UI.Services;
+
 
 namespace WebSiteCore
 {
@@ -107,10 +111,15 @@ namespace WebSiteCore
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseHttpsRedirection();
             app.UseSpaStaticFiles();
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"UserImages")),
+                RequestPath = new PathString("/UserImages")
+            });
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
