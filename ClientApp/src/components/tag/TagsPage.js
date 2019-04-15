@@ -2,27 +2,24 @@ import React, { Component } from 'react';
 import { Row } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { getTagsApi } from '../../actions/tagsActions';
-import Tag from './TagsList';
-
-import AddTag from './AddTag'
+import TagList from './TagsList'
 
 class TagsPage extends Component {
 
-
-    componentDidMount = () => {
-        this.props.getTagsApi()
+     componentDidMount = () => {
+      this.state =  this.props.getTagsApi()
             .then(
                 () => { },
                 (err) => { console.log("Error get data ", err); }
+            ).then(
+                console.log(this.state)
             )
     }
+
     render() {
 
         return (
-            <Row>
-                <AddTag />
-                <Tag tag={this.props.tags} />
-            </Row>
+                <TagList/>
         );
     }
 }

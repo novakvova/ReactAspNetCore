@@ -6,7 +6,6 @@ import * as WeatherForecasts from "./WeatherForecasts";
 import * as UsersList from "./UsersList";
 import auth from '../reducers/auth';
 import tags from '../reducers/tags';
-
 export default function configureStore(history, initialState) {
   const reducers = {
     counter: Counter.reducer,
@@ -14,6 +13,7 @@ export default function configureStore(history, initialState) {
     users: UsersList.reducer,
     auth,
     tags
+    
   };
 
   const middleware = [thunk, routerMiddleware(history)];

@@ -31,8 +31,18 @@ namespace WebSiteCore.GenericRepos.Repository
         {
             entity.ModifiedDate = DateTime.UtcNow;
             entity.ModifiedBy = modifiedBy;
-            context.Set<TEntity>().Attach(entity);
-            context.Entry(entity).State = EntityState.Modified;
+            try
+            {
+                context.Entry(entity).State = EntityState.Detached;
+                //context.Set<TEntity>().Attach(entity);
+                context.Entry(entity).State = EntityState.Modified;
+            }
+            catch (Exception er)
+            {
+
+                throw new Exception(er.Message);
+            }
+
         }
 
         public virtual void Delete<TEntity>(object id)

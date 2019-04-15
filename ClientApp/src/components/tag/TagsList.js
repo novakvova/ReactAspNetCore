@@ -4,33 +4,62 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { Col, Row } from 'react-bootstrap';
 import { connect } from "react-redux";
-import { updateTag } from '../../actions/tagsActions';
-
+import { updateTagApi } from '../../actions/tagsActions';
+import AddTag from './AddTag';
+import DeleteTag from './DeleteTag';
+import {bindActionCreators} from 'redux';
 class TagList extends React.Component {
+
   state = {
-    errors:{
+    errors: {
 
     },
     columnDefs: [{
       headerName: "Id", field: "id", sortable: true, filter: true, checkboxSelection: true
     },
     {
-      headerName: "Name", field: "name", sortable: true, filter: true, editable:true
+      headerName: "Name", field: "name", sortable: true, filter: true, editable: true
     }, {
       headerName: "Created Date", field: "createdDate", sortable: true, filter: true
     },
     {
       headerName: "Удалить", field: ""
-    }]
+    }],
+    getRowNodeId: function(data) {
+      return data.id;
+    }
   }
-  // handleChange = (e) => {
-  //   console.log("-TargetName-", e.target.name, e.target.value);
-  //   this.setStateByErrors(e.target.name, e.target.value);
-  // }
-  onCellValueChanged = (data)=>
-  {
+ 
+  getContextMenuItems = (params) => {
+    const folderActions = [{
+        name: "ADD_TAG",
+        action: () => this.props.actions.addTagApi(params.node.data)
+    }];
+
+    const fileActions = [{
+        name: "DELETE_TAG",
+        action: () => this.props.actions.deleteTagApi(params.node.data)
+    }];
+
+    return params.node.group ? folderActions : fileActions;
+  };
+
+  onGridReady = params => {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+    // params.api.setRowData(this.props.tags);
+  };
+
+
+  onSelectionChanged() {
+    this.setState({tag: this.gridApi.getSelectedRows()[0]})
+    console.log("Cell Changed: ", this.props.rowData)
+    console.log("Selected: ",this.state.tag)
+  }
+
+  onCellValueChanged = (data) => {
     var ChangedTag = data.data;
-    console.log("Cell Changed: ", ChangedTag.name)
+    console.log("Cell Changed: ", this.props.rowData)
     // data.preventDefault();
     let errors = {};
     if (ChangedTag.name === '') errors.name = "Cant't be empty!"
@@ -38,42 +67,62 @@ class TagList extends React.Component {
 
     const isValid = Object.keys(errors).length === 0
     if (isValid) {
-        this.props.updateTag({ChangedTag})
-            .then(
-                () => this.setState({ done: true }),
-                (err) => this.setState({ errors: err.response.data })
-            )
-            .then(this.setState({ errors }))
+      this.props.updateTagApi({ ChangedTag })
+        .then(
+          () => this.setState({ done: true }),
+          (err) => this.setState({ errors: err.response.data })
+        )
+        .then(this.setState({ errors }))
     }
     else {
       console.log("Cell Changed: ", ChangedTag)
-        this.setState({ errors });
+      this.setState({ errors });
     }
 
   }
 
   render() {
     return (
-      <Row>
-        <Col md={12}>
-          <div className="ag-theme-balham"
-            style={{
-              height: '500px'
-            }}>
-
-            <AgGridReact rowSelection="single" pagination="false" onCellValueChanged = {this.onCellValueChanged} 
+      <Row style={{
+        paddingTop: 10,
+        alignContent: "center"
+      }}>
+        <AddTag />
+        <DeleteTag tag={this.state.tag}/>
+        <Row>
+          <Col md={11}>
+            <div className="ag-theme-balham"
+              style={{
+                height: '700px'
+              }}>
+              <AgGridReact 
+              deltaRowDataMode="true"
+              rowSelection="single" 
+              pagination="false" 
+              animateRows={true}
+              onGridReady={this.onGridReady}
+              getRowNodeId={this.state.getRowNodeId}
+              onCellValueChanged={this.onCellValueChanged} 
+              onSelectionChanged={this.onSelectionChanged.bind(this)}
               columnDefs={this.state.columnDefs}
-              rowData={this.props.tag}>
-            </AgGridReact>
-          </div>
-        </Col>
+              getContextMenuItems={this.getContextMenuItems}
+              rowData={this.props.tags}
+                >
+              </AgGridReact>
+            </div>
+          </Col>
+        </Row>
       </Row>
+
     )
   }
 }
 const mapStateToProps = (state) => {
   return {
-      tags: state.tags.tags
+      tags: state.tags.tags,
   };
 }
-export default connect(mapStateToProps, { updateTag })(TagList);
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(actions, dispatch)
+});
+export default connect(mapStateToProps,mapDispatchToProps, { updateTagApi })(TagList);

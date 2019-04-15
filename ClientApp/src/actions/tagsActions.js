@@ -25,6 +25,7 @@ export function deleteTag(tag) {
   };
 }
 export function updateTag(tag) {
+  console.log("UpdateFunction: ", tag)
   return {
     type: UPDATE_TAG,
     tag
@@ -54,10 +55,24 @@ export function addTagApi(tag) {
 
 export function updateTagApi(tag) {
   return dispatch => {
-    return axios.put('api/Tags' + "/" + tag.id, tag)
+    console.log("Update Dispatch: ", tag.ChangedTag)
+    return axios.put('api/Tags' + "/" + tag.ChangedTag.id, tag.ChangedTag)
       .then(res => {
         console.log("LocalStorage Tags: ", res.data)
         dispatch(updateTag(res.data));
+      }
+      )
+  }
+
+  
+}
+
+export function deleteTagApi(tag) {
+  return dispatch => {
+    console.log("Update Dispatch: ", tag)
+    return axios.delete('api/Tags' + "/" + tag.item.id)
+      .then(res => {
+        dispatch(deleteTag(res.data));
       }
       )
   }

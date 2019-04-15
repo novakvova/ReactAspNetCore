@@ -1,5 +1,4 @@
 import { GET_TAGS, ADD_TAG, UPDATE_TAG, DELETE_TAG } from '../actions/types';
-
 const initialState = {
   searchSuccess: false,
   dataTotalSize:0,
@@ -7,6 +6,7 @@ const initialState = {
 };
 
 export default (state = initialState, action = {}) => {
+  const payload = action.payload;
   console.log("Actions: ", action.type, action.tag);
   switch(action.type) {
     case GET_TAGS:
@@ -22,6 +22,11 @@ export default (state = initialState, action = {}) => {
     return { 
         ...state
     }
+    case DELETE_TAG :{
+      console.log("Delete Action: ", action.type, action.tag.id);
+      return state.tags.filter(item => item.id != action.tag.id);
+    }
+
     default: return state;
   }
 }

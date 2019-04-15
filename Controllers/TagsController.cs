@@ -86,7 +86,7 @@ namespace WebSiteCore.Controllers
                 return BadRequest();
             }
 
-            _context.Update(tags);
+           _context.Update(tags);
 
             try
             {

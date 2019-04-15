@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { connect } from "react-redux";
-import { addTagApi } from '../../actions/tagsActions';
+import { addTagApi, deleteTagApi } from '../../actions/tagsActions';
 import classnames from 'classnames';
 
 
@@ -40,6 +40,7 @@ class AddTag extends Component {
 
     onSubmitForm = (e) => {
         e.preventDefault();
+        console.log("Button: ", e.target)
         let errors = {};
         if (this.state.Name === '') errors.name = "Cant't be empty!"
 
@@ -66,11 +67,6 @@ class AddTag extends Component {
         const { errors } = this.state;
 
         return (
-            <Row
-                style={{
-                    paddingTop: 10,
-                    alignContent: "center"
-                }}>
                 <form onSubmit={this.onSubmitForm}>
                     <Col md={2}>
                         <label htmlFor="Name"
@@ -80,7 +76,7 @@ class AddTag extends Component {
                             }}
                         >Tag Name</label>
                     </Col>
-                    <Col md={8}>
+                    <Col md={6}>
                         <div className={classnames('form-group', { 'has-error': !!errors.name })}>
                             <input type="Name"
                                 className="form-control"
@@ -94,20 +90,13 @@ class AddTag extends Component {
                     <Col md={2}>
                         <div className="form-group">
                             <div className="col-md-4">
-                                <button type="submit" className="btn btn-warning">Додати<span className="glyphicon glyphicon-send"></span></button>
+                                <button type="submit" id="Add_Button" className="btn btn-warning">Додати<span className="glyphicon glyphicon-send"></span></button>
                             </div>
                         </div>
                     </Col>
                 </form>
-            </Row>
-
-
         );
     }
 }
-const mapStateToProps = (state) => {
-    return {
-        tags: state.tags.tags
-    };
-}
-export default connect(mapStateToProps, { addTagApi })(AddTag);
+
+export default connect(null, { addTagApi })(AddTag);
